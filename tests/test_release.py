@@ -80,6 +80,23 @@ def test_remove_solution_and_keep_original_nb_json_unchanged():
 def test_write_nb():
     nb_path = NB_PATH / "test.ipynb"
     output_path = NB_PATH / "output.ipynb"
+    try:
+        output_path.unlink()
+    except FileNotFoundError:  # TODO Ensure py3.8 is used so that can pass
+                               # `missing_ok=True` to `path.unlink`.
+        pass
     nb_json = nbchkr.utils.read(nb_path=nb_path)
     student_nb = nbchkr.utils.remove_cells(nb_json=nb_json)
-    nbchkr.utils.write(output_path=output_path, json=student_nb)
+    nbchkr.utils.write(output_path=output_path, nb_json=student_nb)
+
+    student_nb = nbchkr.utils.read(nb_path=output_path)
+    assert "sum(i for i in range(11))" not in str(student_nb)
+    assert "sum(i for i in range(n + 1))" not in str(student_nb)
+    assert "55" not in str(student_nb)
+
+    # TODO Add a better pytest cleanup.
+    try:
+        output_path.unlink()
+    except FileNotFoundError:  # TODO Ensure py3.8 is used so that can pass
+                               # `missing_ok=True` to `path.unlink`.
+        pass

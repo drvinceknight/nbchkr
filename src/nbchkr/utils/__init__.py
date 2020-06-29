@@ -27,7 +27,7 @@ def remove_cells(nb_json, tags_regex_patterns_to_ignore=None, solution_regex=Non
             try:
                 source = "".join(cell["source"])
                 new_source = re.sub(pattern=solution_regex, repl="", string=source)
-                cell["source"] = new_source.split("\n")
+                cell["source"] = new_source
 
 
                 if bool(re.match(pattern=solution_regex, string=source)) is True:
@@ -37,7 +37,10 @@ def remove_cells(nb_json, tags_regex_patterns_to_ignore=None, solution_regex=Non
                         pass
             except KeyError:
                 pass
-            cells.append(copy.deepcopy(cell))
-    nb_out = copy.deepcopy(nb_json)
-    nb_out["cells"] = cells
-    return nb_out
+            cells.append(cell)
+    nb_json["cells"] = cells
+    return nb_json
+
+
+def write(output_path, nb_json):
+    output_path.write_text(json.dumps(nb_json))

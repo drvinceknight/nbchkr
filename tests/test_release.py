@@ -6,13 +6,13 @@ Tests for the release functionality:
     - Write nb
 
 """
-import nbchkr
+import nbchkr.utils
 
 import pathlib
 
 NB_PATH = pathlib.Path("./nbs")
 
 def test_read_nb():
-    path = NB_PATH / "test.ipynb"
-    nb = nbchkr.utils.read(path=path)
+    nb_path = NB_PATH / "test.ipynb"
+    nb = nbchkr.utils.read(nb_path=nb_path)
     assert type(nb) is str

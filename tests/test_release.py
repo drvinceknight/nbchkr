@@ -53,3 +53,25 @@ def test_remove_cells():
     expected_length = 4
     assert type(student_nb["cells"]) is list
     assert len(student_nb["cells"]) == expected_length
+
+
+def test_remove_solution_and_keep_original_nb_json_unchanged():
+    """
+    This checks that solutions text is not included.
+
+    Note that, as implemented both `nb_json` and `student_nb` are modified. This
+    should be fixed. TODO When fixed remove this line of documentation.
+    """
+    nb_path = NB_PATH / "test.ipynb"
+    nb_json = nbchkr.utils.read(nb_path=nb_path)
+    assert "sum(i for i in range(11))" in str(nb_json)
+    assert "sum(i for i in range(n + 1))" in str(nb_json)
+    assert "55" in str(nb_json)
+
+    student_nb = nbchkr.utils.remove_cells(nb_json=nb_json)
+    assert "sum(i for i in range(11))" not in str(student_nb)
+    assert "sum(i for i in range(n + 1))" not in str(student_nb)
+    assert "55" not in str(student_nb)
+    # TODO Add test that shows wrong behaviour of changing the imported JSON
+    # and document.
+    assert "sum(i for i in range(n + 1))" not in str(nb_json)

@@ -45,3 +45,11 @@ def test_read_nb_cells_gives_list():
     expected_length = 2
     assert type(nb["cells"]) is list
     assert len(nb["cells"]) == expected_length
+
+def test_remove_cells():
+    nb_path = NB_PATH / "test.ipynb"
+    nb = nbchkr.utils.read(nb_path=nb_path)
+    student_nb = nbchkr.utils.remove_cells(nb_path=nb_path)
+    expected_length = 2
+    assert type(student_nb["cells"]) is list
+    assert len(student_nb["cells"]) == expected_length

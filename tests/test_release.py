@@ -75,3 +75,11 @@ def test_remove_solution_and_keep_original_nb_json_unchanged():
     # TODO Add test that shows wrong behaviour of changing the imported JSON
     # and document.
     assert "sum(i for i in range(n + 1))" not in str(nb_json)
+
+
+def test_write_nb():
+    nb_path = NB_PATH / "test.ipynb"
+    output_path = NB_PATH / "output.ipynb"
+    nb_json = nbchkr.utils.read(nb_path=nb_path)
+    student_nb = nbchkr.utils.remove_cells(nb_json=nb_json)
+    nbchkr.utils.write(output_path=output_path, json=student_nb)

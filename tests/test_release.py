@@ -42,14 +42,14 @@ def test_read_nb_cells_gives_list():
     """
     nb_path = NB_PATH / "test.ipynb"
     nb = nbchkr.utils.read(nb_path=nb_path)
-    expected_length = 2
+    expected_length = 8
     assert type(nb["cells"]) is list
     assert len(nb["cells"]) == expected_length
 
 def test_remove_cells():
     nb_path = NB_PATH / "test.ipynb"
-    nb = nbchkr.utils.read(nb_path=nb_path)
-    student_nb = nbchkr.utils.remove_cells(nb_path=nb_path)
-    expected_length = 2
+    nb_json = nbchkr.utils.read(nb_path=nb_path)
+    student_nb = nbchkr.utils.remove_cells(nb_json=nb_json)
+    expected_length = 4
     assert type(student_nb["cells"]) is list
     assert len(student_nb["cells"]) == expected_length

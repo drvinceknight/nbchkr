@@ -14,8 +14,7 @@ Write a jupyter notebook `main.ipynb`, using tags to denote specific cells:
 
 - `score:<total>` A cell with assert statements to check an answer. Worth
   `<total>` marks.
-- `hidden` A cell that should not be shown.
-- `solution` A cell that will only be shown in the feedback generated.
+- `hide` A cell that should not be shown.
 
 See documentation for further examples and features.
 

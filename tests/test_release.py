@@ -10,6 +10,7 @@ import nbchkr.utils
 
 import pathlib
 
+
 def get_absolute_path_of_test_directory():
     return pathlib.Path(__file__).parent.absolute()
 
@@ -45,6 +46,7 @@ def test_read_nb_cells_gives_list():
     expected_length = 8
     assert type(nb["cells"]) is list
     assert len(nb["cells"]) == expected_length
+
 
 def test_remove_cells():
     nb_path = NB_PATH / "test.ipynb"

@@ -1,6 +1,5 @@
 import json
 import re
-import copy
 
 TAGS_REGEX_PATTERNS_TO_IGNORE = ["hide", r"score:\d"]
 SOLUTION_REGEX = re.compile(r"### BEGIN SOLUTION[\s\S](.*?)[\s\S]### END SOLUTION", re.DOTALL)
@@ -21,7 +20,7 @@ def remove_cells(nb_json, tags_regex_patterns_to_ignore=None, solution_regex=Non
     for cell in nb_json["cells"]:
         if "tags" not in cell["metadata"] or all(
             not bool(re.match(pattern=pattern, string=tag))
-            for tag in cell["metadata"]["tags"] 
+            for tag in cell["metadata"]["tags"]
             for pattern in tags_regex_patterns_to_ignore
         ):
             try:
@@ -29,14 +28,13 @@ def remove_cells(nb_json, tags_regex_patterns_to_ignore=None, solution_regex=Non
                 new_source = re.sub(pattern=solution_regex, repl="", string=source)
                 cell["source"] = new_source
 
-
                 if bool(re.match(pattern=solution_regex, string=source)) is True:
                     try:
                         cell["outputs"] = []
-                    except KeyError:
-                        pass
-            except KeyError:
-                pass
+                    except KeyError:  # pragma: no cover
+                        pass   # TODO Add test coverage for this statement
+            except KeyError:  # pragma: no cover
+                pass   # TODO Add test coverage for this statement
             cells.append(cell)
     nb_json["cells"] = cells
     return nb_json

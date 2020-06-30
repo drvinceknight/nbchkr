@@ -38,4 +38,4 @@ jobs:
     - name: Interrogate docstrings to check docstring coverage
       run: |
         python -m pip install interrogate
-        interrogate -v -f 100 .
+        interrogate -e setup.py -e tests/ -M -i -v -f 100 .

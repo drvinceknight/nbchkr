@@ -1,5 +1,6 @@
 import json
 import re
+import pathlib
 
 TAGS_REGEX_PATTERNS_TO_IGNORE = ["hide", r"score:\d"]
 SOLUTION_REGEX = re.compile(
@@ -7,7 +8,7 @@ SOLUTION_REGEX = re.compile(
 )
 
 
-def read(nb_path):
+def read(nb_path: pathlib.Path) -> dict:
     """
     Read a jupyter notebook file at `nb_path`.
 
@@ -18,7 +19,9 @@ def read(nb_path):
     return nb
 
 
-def remove_cells(nb_json, tags_regex_patterns_to_ignore=None, solution_regex=None):
+def remove_cells(
+    nb_json, tags_regex_patterns_to_ignore=None, solution_regex=None
+):  # TODO Add typing to this function
     """
     Given a dictionary representation of a notebook, removes:
 
@@ -55,7 +58,7 @@ def remove_cells(nb_json, tags_regex_patterns_to_ignore=None, solution_regex=Non
     return nb_json
 
 
-def write(output_path, nb_json):
+def write(output_path: pathlib.Path, nb_json):
     """
     Write the python dict representation of a notebook to `output_path`.
     """

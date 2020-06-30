@@ -2,3 +2,4 @@
 **/__pycache__/
 **nbchkr.egg**
 *build/
+*ipynb_checkpoints*

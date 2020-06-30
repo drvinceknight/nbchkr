@@ -8,12 +8,25 @@ SOLUTION_REGEX = re.compile(
 
 
 def read(nb_path):
+    """
+    Read a jupyter notebook file at `nb_path`.
+
+    Returns the python `dict` representation.
+    """
     contents = nb_path.read_text()
     nb = json.loads(contents)
     return nb
 
 
 def remove_cells(nb_json, tags_regex_patterns_to_ignore=None, solution_regex=None):
+    """
+    Given a dictionary representation of a notebook, removes:
+
+    - Cells with tags matching patterns in `tags_regex_patterns_to_ignore`
+    - Text in cells matching the `solution_regex` pattern.
+
+    Returns the python `dict` representation.
+    """
     if tags_regex_patterns_to_ignore is None:
         tags_regex_patterns_to_ignore = TAGS_REGEX_PATTERNS_TO_IGNORE
     if solution_regex is None:
@@ -43,4 +56,7 @@ def remove_cells(nb_json, tags_regex_patterns_to_ignore=None, solution_regex=Non
 
 
 def write(output_path, nb_json):
+    """
+    Write the python dict representation of a notebook to `output_path`.
+    """
     output_path.write_text(json.dumps(nb_json))

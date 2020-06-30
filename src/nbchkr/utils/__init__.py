@@ -2,7 +2,9 @@ import json
 import re
 
 TAGS_REGEX_PATTERNS_TO_IGNORE = ["hide", r"score:\d"]
-SOLUTION_REGEX = re.compile(r"### BEGIN SOLUTION[\s\S](.*?)[\s\S]### END SOLUTION", re.DOTALL)
+SOLUTION_REGEX = re.compile(
+    r"### BEGIN SOLUTION[\s\S](.*?)[\s\S]### END SOLUTION", re.DOTALL
+)
 
 
 def read(nb_path):
@@ -32,9 +34,9 @@ def remove_cells(nb_json, tags_regex_patterns_to_ignore=None, solution_regex=Non
                     try:
                         cell["outputs"] = []
                     except KeyError:  # pragma: no cover
-                        pass   # TODO Add test coverage for this statement
+                        pass  # TODO Add test coverage for this statement
             except KeyError:  # pragma: no cover
-                pass   # TODO Add test coverage for this statement
+                pass  # TODO Add test coverage for this statement
             cells.append(cell)
     nb_json["cells"] = cells
     return nb_json

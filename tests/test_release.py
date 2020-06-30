@@ -27,12 +27,7 @@ def test_read_nb_gives_dictionary():
 def test_read_nb_gives_expected_keys():
     nb_path = NB_PATH / "test.ipynb"
     nb = nbchkr.utils.read(nb_path=nb_path)
-    expected_keys = {
-            'cells',
-            'metadata',
-            'nbformat',
-            'nbformat_minor',
-            }
+    expected_keys = {"cells", "metadata", "nbformat", "nbformat_minor"}
     assert set(nb.keys()) == expected_keys
 
 
@@ -85,7 +80,7 @@ def test_write_nb():
     try:
         output_path.unlink()
     except FileNotFoundError:  # TODO Ensure py3.8 is used so that can pass
-                               # `missing_ok=True` to `path.unlink`.
+        # `missing_ok=True` to `path.unlink`.
         pass
     nb_json = nbchkr.utils.read(nb_path=nb_path)
     student_nb = nbchkr.utils.remove_cells(nb_json=nb_json)
@@ -100,5 +95,5 @@ def test_write_nb():
     try:
         output_path.unlink()
     except FileNotFoundError:  # TODO Ensure py3.8 is used so that can pass
-                               # `missing_ok=True` to `path.unlink`.
+        # `missing_ok=True` to `path.unlink`.
         pass

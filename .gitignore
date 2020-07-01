@@ -3,3 +3,4 @@
 **nbchkr.egg**
 *build/
 *ipynb_checkpoints*
+.coverage

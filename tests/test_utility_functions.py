@@ -3,6 +3,7 @@ Tests for a small utility functions.
 """
 import nbchkr
 
+
 def test_get_tags():
     cell = {"metadata": {"tags": ["tag_1", "tag_2"]}}
     assert nbchkr.utils.get_tags(cell=cell) == "tag_1|tag_2"

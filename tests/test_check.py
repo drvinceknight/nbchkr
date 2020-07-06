@@ -8,7 +8,6 @@ Tests for the check functionality
 """
 import nbchkr.utils
 
-import pathlib
 import nbformat
 
 from test_release import NB_PATH
@@ -35,7 +34,7 @@ def test_add_checks_creates_notebook_with_assertions():
 
 def test_check_with_no_errors_for_original_source():
     nb_node = nbchkr.utils.read(nb_path=NB_PATH / "test.ipynb")
-    score,  maximum_score, feedback = nbchkr.utils.check(nb_node=nb_node)
+    score, maximum_score, feedback = nbchkr.utils.check(nb_node=nb_node)
     expected_score = 10
     assert score == expected_score
     assert maximum_score == expected_score
@@ -66,10 +65,8 @@ Assertion passed:
 def test_check_with_no_errors_for_test_submission():
     nb_node = nbchkr.utils.read(nb_path=NB_PATH / "submission.ipynb")
     source_nb_node = nbchkr.utils.read(nb_path=NB_PATH / "test.ipynb")
-    nb_node = nbchkr.utils.add_checks(
-        nb_json=nb_node, source_nb_json=source_nb_node
-    )
-    score,  maximum_score, feedback = nbchkr.utils.check(nb_node=nb_node)
+    nb_node = nbchkr.utils.add_checks(nb_json=nb_node, source_nb_json=source_nb_node)
+    score, maximum_score, feedback = nbchkr.utils.check(nb_node=nb_node)
     expected_score = 2
     expected_maximum_score = 10
     assert score == expected_score

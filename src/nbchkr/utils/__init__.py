@@ -6,6 +6,7 @@ TAGS_REGEX_PATTERNS_TO_IGNORE = ["hide", r"score:\d"]
 SOLUTION_REGEX = re.compile(
     r"### BEGIN SOLUTION[\s\S](.*?)[\s\S]### END SOLUTION", re.DOTALL
 )
+ANSWER_TAG_REGEX = r"answer:*"
 
 
 def read(nb_path: pathlib.Path) -> dict:
@@ -63,3 +64,17 @@ def write(output_path: pathlib.Path, nb_json):
     Write the python dict representation of a notebook to `output_path`.
     """
     output_path.write_text(json.dumps(nb_json))
+
+
+def add_checks(nb_json: dict, source_nb_json: dict, answer_tag_regex=None) -> dict:
+    if answer_tag_regex == None:
+        answer_tag_regex = ANSWER_TAG_REGEX
+    answers = {tag: cell 
+               for cell in nb_json["cells"] 
+               for tag in cell["metadata"].get("tags", [])
+               if bool(re.match(pattern=answer_tag_regex, string=tag))}
+    for i, cell in enumerate(source_nb_json["cells"]):
+        for tag in cell["metadata"].get("tags", []):
+            if tag in answers:
+                source_nb_json["cells"][i] = answers[tag]
+    return source_nb_json

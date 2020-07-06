@@ -8,6 +8,7 @@ Tests for the release functionality:
 """
 import nbchkr.utils
 
+import nbformat
 import pathlib
 
 
@@ -21,7 +22,7 @@ NB_PATH = get_absolute_path_of_test_directory() / "nbs/"
 def test_read_nb_gives_dictionary():
     nb_path = NB_PATH / "test.ipynb"
     nb = nbchkr.utils.read(nb_path=nb_path)
-    assert type(nb) is dict
+    assert type(nb) is nbformat.NotebookNode
 
 
 def test_read_nb_gives_expected_keys():

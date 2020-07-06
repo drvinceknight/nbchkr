@@ -2,6 +2,8 @@ import json
 import re
 import pathlib
 
+import nbformat
+
 TAGS_REGEX_PATTERNS_TO_IGNORE = ["hide", r"score:\d"]
 SOLUTION_REGEX = re.compile(
     r"### BEGIN SOLUTION[\s\S](.*?)[\s\S]### END SOLUTION", re.DOTALL
@@ -9,14 +11,14 @@ SOLUTION_REGEX = re.compile(
 ANSWER_TAG_REGEX = r"answer:*"
 
 
-def read(nb_path: pathlib.Path) -> dict:
+def read(nb_path: pathlib.Path, as_version: int=4) -> dict:
     """
     Read a jupyter notebook file at `nb_path`.
 
     Returns the python `dict` representation.
     """
-    contents = nb_path.read_text()
-    nb = json.loads(contents)
+    with open(nb_path, "r") as f:
+        nb = nbformat.read(f, as_version=as_version)
     return nb
 
 

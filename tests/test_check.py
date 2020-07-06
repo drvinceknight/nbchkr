@@ -9,6 +9,7 @@ Tests for the check functionality
 import nbchkr.utils
 
 import pathlib
+import nbformat
 
 from test_release import NB_PATH
 
@@ -16,7 +17,7 @@ from test_release import NB_PATH
 def test_read_nb_gives_dictionary():
     nb_path = NB_PATH / "submission.ipynb"
     nb = nbchkr.utils.read(nb_path=nb_path)
-    assert type(nb) is dict
+    assert type(nb) is nbformat.NotebookNode
 
 
 def test_add_checks_creates_notebook_with_assertions():

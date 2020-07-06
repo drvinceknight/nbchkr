@@ -2,6 +2,7 @@ import json
 import re
 import pathlib
 
+from typing import Tuple, Optional
 import nbformat
 
 TAGS_REGEX_PATTERNS_TO_IGNORE = ["hide", r"score:\d"]
@@ -9,6 +10,7 @@ SOLUTION_REGEX = re.compile(
     r"### BEGIN SOLUTION[\s\S](.*?)[\s\S]### END SOLUTION", re.DOTALL
 )
 ANSWER_TAG_REGEX = r"answer:*"
+SCORE_REGEX = re.compile(r"score:(\d+)")
 
 
 def read(nb_path: pathlib.Path, as_version: int=4) -> dict:
@@ -80,3 +82,22 @@ def add_checks(nb_json: dict, source_nb_json: dict, answer_tag_regex=None) -> di
             if tag in answers:
                 source_nb_json["cells"][i] = answers[tag]
     return source_nb_json
+def get_tags(cell: dict, seperator: str="|") -> Optional[str]:
+    try:
+        return seperator.join(cell["metadata"]["tags"])
+    except KeyError:
+        return None
+
+
+def get_score(cell: dict, score_regex_pattern=None) -> Optional[int]:
+    if score_regex_pattern == None:
+        score_regex_pattern = SCORE_REGEX
+    tags = get_tags(cell)
+    if tags is not None:
+        search = re.search(pattern=score_regex_pattern, string=tags)
+        try:
+            return int(search.group(1))
+        except AttributeError:
+            return None
+    return None
+

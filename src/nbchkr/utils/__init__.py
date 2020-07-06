@@ -3,7 +3,9 @@ import re
 import pathlib
 
 from typing import Tuple, Optional
+
 import nbformat
+from nbconvert.preprocessors import ExecutePreprocessor
 
 TAGS_REGEX_PATTERNS_TO_IGNORE = ["hide", r"score:\d"]
 SOLUTION_REGEX = re.compile(
@@ -73,8 +75,8 @@ def write(output_path: pathlib.Path, nb_json):
 def add_checks(nb_json: dict, source_nb_json: dict, answer_tag_regex=None) -> dict:
     if answer_tag_regex == None:
         answer_tag_regex = ANSWER_TAG_REGEX
-    answers = {tag: cell 
-               for cell in nb_json["cells"] 
+    answers = {tag: cell
+               for cell in nb_json["cells"]
                for tag in cell["metadata"].get("tags", [])
                if bool(re.match(pattern=answer_tag_regex, string=tag))}
     for i, cell in enumerate(source_nb_json["cells"]):
@@ -82,9 +84,12 @@ def add_checks(nb_json: dict, source_nb_json: dict, answer_tag_regex=None) -> di
             if tag in answers:
                 source_nb_json["cells"][i] = answers[tag]
     return source_nb_json
-def get_tags(cell: dict, seperator: str="|") -> Optional[str]:
+
+
+# TODO Add tests for markdown output
+def get_tags(cell: dict, tag_seperator: str="|") -> Optional[str]:
     try:
-        return seperator.join(cell["metadata"]["tags"])
+        return tag_seperator.join(cell["metadata"]["tags"])
     except KeyError:
         return None
 
@@ -101,3 +106,39 @@ def get_score(cell: dict, score_regex_pattern=None) -> Optional[int]:
             return None
     return None
 
+
+def check(nb_node: dict, timeout: int=600, score_regex_pattern=None) -> Tuple[int, int, str]:
+    if score_regex_pattern == None:
+        score_regex_pattern = SCORE_REGEX
+
+    ep = ExecutePreprocessor(timeout=timeout, allow_errors=True)
+    ep.preprocess(nb_node)
+
+    total_score = 0
+    maximum_score = 0
+    feedback_md = ""
+
+    for cell in nb_node["cells"]:
+        if get_score(cell) is not None:
+            score = get_score(cell)
+            maximum_score += score
+            try:
+                outputs = cell["outputs"][0]
+                if outputs["output_type"] == "error":  # Need to grab the score here (use regex)
+                    question_feedback = outputs['evalue']
+                    feedback_md += f"""
+{question_feedback}
+
+0 / {score}
+"""
+            except IndexError:
+                assertion = cell["source"]
+                feedback_md += f"""
+Assertion passed:
+
+    {assertion}
+
+{score} / {score}
+"""
+                total_score += score
+    return total_score, maximum_score, feedback_md

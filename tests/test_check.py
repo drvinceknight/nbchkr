@@ -20,16 +20,16 @@ def test_read_nb_gives_dictionary():
 
 
 def test_add_checks_creates_notebook_with_assertions():
-    nb_json = nbchkr.utils.read(nb_path=NB_PATH / "submission.ipynb")
-    source_nb_json = nbchkr.utils.read(nb_path=NB_PATH / "test.ipynb")
+    nb_node = nbchkr.utils.read(nb_path=NB_PATH / "submission.ipynb")
+    source_nb_node = nbchkr.utils.read(nb_path=NB_PATH / "test.ipynb")
     nb_with_checks = nbchkr.utils.add_checks(
-        nb_json=nb_json, source_nb_json=source_nb_json
+        nb_node=nb_node, source_nb_node=source_nb_node
     )
     assert "assert _ == 55" in str(nb_with_checks)
     assert "sum(i for i in range(10))" in str(nb_with_checks)
 
     output_path = NB_PATH / "feedback.ipynb"
-    nbchkr.utils.write(output_path=output_path, nb_json=nb_with_checks)
+    nbchkr.utils.write(output_path=output_path, nb_node=nb_with_checks)
 
 
 def test_check_with_no_errors_for_original_source():
@@ -65,7 +65,7 @@ Assertion passed:
 def test_check_with_no_errors_for_test_submission():
     nb_node = nbchkr.utils.read(nb_path=NB_PATH / "submission.ipynb")
     source_nb_node = nbchkr.utils.read(nb_path=NB_PATH / "test.ipynb")
-    nb_node = nbchkr.utils.add_checks(nb_json=nb_node, source_nb_json=source_nb_node)
+    nb_node = nbchkr.utils.add_checks(nb_node=nb_node, source_nb_node=source_nb_node)
     score, maximum_score, feedback = nbchkr.utils.check(nb_node=nb_node)
     expected_score = 2
     expected_maximum_score = 10

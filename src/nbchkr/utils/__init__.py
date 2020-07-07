@@ -27,7 +27,7 @@ def read(nb_path: pathlib.Path, as_version: int = 4) -> dict:
 
 
 def remove_cells(
-    nb_json, tags_regex_patterns_to_ignore=None, solution_regex=None
+    nb_node, tags_regex_patterns_to_ignore=None, solution_regex=None
 ):  # TODO Add typing to this function
     """
     Given a dictionary representation of a notebook, removes:
@@ -42,7 +42,7 @@ def remove_cells(
     if solution_regex is None:
         solution_regex = SOLUTION_REGEX
     cells = []
-    for cell in nb_json["cells"]:
+    for cell in nb_node["cells"]:
         if "tags" not in cell["metadata"] or all(
             not bool(re.match(pattern=pattern, string=tag))
             for tag in cell["metadata"]["tags"]
@@ -61,21 +61,21 @@ def remove_cells(
             except KeyError:  # pragma: no cover
                 pass  # TODO Add test coverage for this statement
             cells.append(cell)
-    nb_json["cells"] = cells
-    return nb_json
+    nb_node["cells"] = cells
+    return nb_node
 
 
-def write(output_path: pathlib.Path, nb_json):
+def write(output_path: pathlib.Path, nb_node: dict):
     """
     Write the python dict representation of a notebook to `output_path`.
     """
-    output_path.write_text(json.dumps(nb_json))
+    output_path.write_text(json.dumps(nb_node))
 
 
-def add_checks(nb_json: dict, source_nb_json: dict, answer_tag_regex=None) -> dict:
+def add_checks(nb_node: dict, source_nb_node: dict, answer_tag_regex=None) -> dict:
     """
-    Given a `nb_json` and a source `source_nb_json`, add the cells in
-    `source_nb` with tags matching `answer_tag_regex` to `source_nb_json`
+    Given a `nb_node` and a source `source_nb_node`, add the cells in
+    `source_nb` with tags matching `answer_tag_regex` to `source_nb_node`
 
     This is used to add a student's answers to the source notebook.
     """
@@ -83,15 +83,15 @@ def add_checks(nb_json: dict, source_nb_json: dict, answer_tag_regex=None) -> di
         answer_tag_regex = ANSWER_TAG_REGEX
     answers = {
         tag: cell
-        for cell in nb_json["cells"]
+        for cell in nb_node["cells"]
         for tag in cell["metadata"].get("tags", [])
         if bool(re.match(pattern=answer_tag_regex, string=tag))
     }
-    for i, cell in enumerate(source_nb_json["cells"]):
+    for i, cell in enumerate(source_nb_node["cells"]):
         for tag in cell["metadata"].get("tags", []):
             if tag in answers:
-                source_nb_json["cells"][i] = answers[tag]
-    return source_nb_json
+                source_nb_node["cells"][i] = answers[tag]
+    return source_nb_node
 
 
 def get_tags(cell: dict, tag_seperator: str = "|") -> Optional[str]:

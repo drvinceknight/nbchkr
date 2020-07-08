@@ -177,9 +177,7 @@ def check_tags_match(
     source_nb_tags = [
         get_tags(cell, tag_seperator=tag_seperator) for cell in source_nb_node["cells"]
     ]
-    nb_tags = [
-        get_tags(cell, tag_seperator=tag_seperator) for cell in nb_node["cells"]
-    ]
+    nb_tags = [get_tags(cell, tag_seperator=tag_seperator) for cell in nb_node["cells"]]
 
     source_nb_tag_counter = collections.Counter(source_nb_tags)
     nb_tag_counter = collections.Counter(nb_tags)

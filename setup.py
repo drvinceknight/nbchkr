@@ -19,4 +19,5 @@ setup(
     url="",
     license="The MIT License (MIT)",
     description="A lightweight tool to grade notebook assignements",
+    entry_points={"console_scripts": "nbchkr=nbchkr.__main__:main"},
 )

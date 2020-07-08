@@ -174,6 +174,10 @@ Assertion passed:
 def check_tags_match(
     source_nb_node: dict, nb_node: dict, tag_seperator: str = "|"
 ) -> bool:
+    """
+    This checks if the count of tags on each cell matches. Note that it does not
+    necessarily guarantee that the tags are on the same cells.
+    """
     source_nb_tags = [
         get_tags(cell, tag_seperator=tag_seperator) for cell in source_nb_node["cells"]
     ]

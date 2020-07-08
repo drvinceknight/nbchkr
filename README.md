@@ -12,6 +12,7 @@ $ pip install nbchkr
 
 Write a jupyter notebook `main.ipynb`, using tags to denote specific cells:
 
+- `answer:<label>` A cell where students are expected to write their answers.
 - `score:<total>` A cell with assert statements to check an answer. Worth
   `<total>` marks.
 - `hide` A cell that should not be shown.
@@ -28,10 +29,18 @@ $ nbchkr release --source main.ipynb --output student.ipynb
 
 Given a student notebook notebook: `submitted.ipynb`
 
-$ nbchkr check --source main.ipynb --submitted submitted.ipynb --feedback feedback.md
+$ nbchkr check --source main.ipynb --submitted submitted.ipynb --feedback feedback.md --output data.csv
 
 This writes to screen the score (total and for each question) and creates
-`feedback.md`.
+`feedback.md` as well as reporting the results to `data.csv`.
+
+Given a directory of student submission `submissions/` it is possible to batch
+check all of them:
+
+$ nbchkr check --source main.ipynb --submitted submissions/ --feedback feedback/ --output data.csv
+
+This will check all notebooks in `submissions/` and write feedback files to
+`feedback/`.
 
 # Why?
 

@@ -1,6 +1,7 @@
+import collections
 import json
-import re
 import pathlib
+import re
 
 from typing import Tuple, Optional
 
@@ -168,3 +169,20 @@ Assertion passed:
 """
                 total_score += score
     return total_score, maximum_score, feedback_md
+
+
+def check_tags_match(
+    source_nb_node: dict, nb_node: dict, tag_seperator: str = "|"
+) -> bool:
+    """
+    This checks if the count of tags on each cell matches. Note that it does not
+    necessarily guarantee that the tags are on the same cells.
+    """
+    source_nb_tags = [
+        get_tags(cell, tag_seperator=tag_seperator) for cell in source_nb_node["cells"]
+    ]
+    nb_tags = [get_tags(cell, tag_seperator=tag_seperator) for cell in nb_node["cells"]]
+
+    source_nb_tag_counter = collections.Counter(source_nb_tags)
+    nb_tag_counter = collections.Counter(nb_tags)
+    return source_nb_tag_counter == nb_tag_counter

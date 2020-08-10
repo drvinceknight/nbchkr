@@ -30,6 +30,7 @@ def test_add_checks_creates_notebook_with_assertions():
 
     output_path = NB_PATH / "feedback.ipynb"
     nbchkr.utils.write(output_path=output_path, nb_node=nb_with_checks)
+    # TODO Delete feedback.ipynb
 
 
 def test_check_with_no_errors_for_original_source():

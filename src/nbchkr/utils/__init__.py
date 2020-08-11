@@ -104,8 +104,13 @@ def get_tags(cell: dict, tag_seperator: str = "|", tag_regex=None) -> Optional[s
     if tag_regex is None:
         tag_regex = UNIVERSAL_REGEX
     try:
-        return tag_seperator.join([tag for tag in cell["metadata"]["tags"] if
-            bool(re.match(pattern=tag_regex, string=tag))])
+        return tag_seperator.join(
+            [
+                tag
+                for tag in cell["metadata"]["tags"]
+                if bool(re.match(pattern=tag_regex, string=tag))
+            ]
+        )
     except KeyError:
         return None
 
@@ -177,8 +182,7 @@ Assertion passed:
 
 
 def check_tags_match(
-    source_nb_node: dict, nb_node: dict, tag_seperator: str = "|",
-    tag_regex=None,
+    source_nb_node: dict, nb_node: dict, tag_seperator: str = "|", tag_regex=None,
 ) -> bool:
     """
     This checks if the count of tags that match `tag_regex` on each cell matches. Note that it does not
@@ -187,13 +191,21 @@ def check_tags_match(
     if tag_regex is None:
         tag_regex = ANSWER_TAG_REGEX
     source_nb_tags = [
-        get_tags(cell, tag_seperator=tag_seperator, tag_regex=tag_regex) for cell in source_nb_node["cells"]
+        get_tags(cell, tag_seperator=tag_seperator, tag_regex=tag_regex)
+        for cell in source_nb_node["cells"]
     ]
-    nb_tags = [get_tags(cell, tag_seperator=tag_seperator, tag_regex=tag_regex) for cell in nb_node["cells"]]
+    nb_tags = [
+        get_tags(cell, tag_seperator=tag_seperator, tag_regex=tag_regex)
+        for cell in nb_node["cells"]
+    ]
 
     # TODO I do not really understand why the `["", None]` is required here.
-    # This is unwanted behaviour from `get_tags` which is returning empty tags. 
+    # This is unwanted behaviour from `get_tags` which is returning empty tags.
     # Aim to remove this.`
-    source_nb_tag_counter = collections.Counter([tag for tag in source_nb_tags if tag not in ["", None]])
-    nb_tag_counter = collections.Counter([tag for tag in nb_tags if tag not in ["", None]])
+    source_nb_tag_counter = collections.Counter(
+        [tag for tag in source_nb_tags if tag not in ["", None]]
+    )
+    nb_tag_counter = collections.Counter(
+        [tag for tag in nb_tags if tag not in ["", None]]
+    )
     return source_nb_tag_counter == nb_tag_counter

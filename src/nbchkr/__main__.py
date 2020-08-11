@@ -34,17 +34,18 @@ def check(source, submitted, feedback_suffix, output):
         csv_writer = csv.writer(f)
         csv_writer.writerow(["Submission filepath", "Score", "Maximum score", "Tags match"])
 
-        for path in sorted(glob.iglob(submitted)):
-            nb_node = nbchkr.utils.read(path)
-            tags_match = nbchkr.utils.check_tags_match(source_nb_node=source_nb_node, nb_node=nb_node)
+        with click.progressbar(sorted(glob.iglob(submitted))) as bar: 
+            for path in bar:
+                nb_node = nbchkr.utils.read(path)
+                tags_match = nbchkr.utils.check_tags_match(source_nb_node=source_nb_node, nb_node=nb_node)
 
-            nb_node = nbchkr.utils.add_checks(nb_node=nb_node, source_nb_node=source_nb_node)
-            score, maximum_score, feedback_md = nbchkr.utils.check(nb_node=nb_node)
+                nb_node = nbchkr.utils.add_checks(nb_node=nb_node, source_nb_node=source_nb_node)
+                score, maximum_score, feedback_md = nbchkr.utils.check(nb_node=nb_node)
 
-            with open(f"{path}{feedback_suffix}", "w") as f:
-                f.write(feedback_md)
+                with open(f"{path}{feedback_suffix}", "w") as f:
+                    f.write(feedback_md)
 
-            csv_writer.writerow([path, score, maximum_score, tags_match])
-            click.echo(f'{path} checked against {source}. Feedback written to {path}{feedback_suffix} and output written to {output}.')
-            if tags_match is False:
-                click.echo(f'WARNING: {path} has tags that do not match the source.')
+                csv_writer.writerow([path, score, maximum_score, tags_match])
+                click.echo(f'{path} checked against {source}. Feedback written to {path}{feedback_suffix} and output written to {output}.')
+                if tags_match is False:
+                    click.echo(f'WARNING: {path} has tags that do not match the source.')

@@ -150,6 +150,7 @@ def check(
     feedback_md = ""
 
     for cell in nb_node["cells"]:
+        # TODO Use the walrus operator here.
         if get_score(cell, score_regex_pattern=score_regex_pattern) > 0:
             score = get_score(cell)
             maximum_score += score

@@ -16,7 +16,9 @@ def test_get_tags_with_given_regex():
         cell=cell, tag_seperator="@", tag_regex=nbchkr.utils.ANSWER_TAG_REGEX
     )
     assert obtained_tags == "answer:q1@answer:q2"
-    obtained_tags = nbchkr.utils.get_tags(cell=cell, tag_regex=nbchkr.utils.ANSWER_TAG_REGEX)
+    obtained_tags = nbchkr.utils.get_tags(
+        cell=cell, tag_regex=nbchkr.utils.ANSWER_TAG_REGEX
+    )
     assert obtained_tags == "answer:q1|answer:q2"
 
 

@@ -1,0 +1,4 @@
+Submission filepath,Score,Maximum score,Tags match
+/Users/vince/src/nbchkr/tests/nbs/submission.ipynb,2,10,True
+/Users/vince/src/nbchkr/tests/nbs/submission_with_missing_tags.ipynb,2,10,False
+/Users/vince/src/nbchkr/tests/nbs/test.ipynb,10,10,True

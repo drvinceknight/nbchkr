@@ -12,6 +12,7 @@ TAGS_REGEX_PATTERNS_TO_IGNORE = ["hide", r"score:\d"]
 SOLUTION_REGEX = re.compile(
     r"### BEGIN SOLUTION[\s\S](.*?)[\s\S]### END SOLUTION", re.DOTALL
 )
+UNIVERSAL_REGEX = re.compile(r".", re.DOTALL)
 ANSWER_TAG_REGEX = r"answer:*"
 SCORE_REGEX = re.compile(r"score:(\d+)")
 
@@ -95,13 +96,16 @@ def add_checks(nb_node: dict, source_nb_node: dict, answer_tag_regex=None) -> di
     return source_nb_node
 
 
-def get_tags(cell: dict, tag_seperator: str = "|") -> Optional[str]:
+def get_tags(cell: dict, tag_seperator: str = "|", tag_regex=None) -> Optional[str]:
     """
-    Given a `cell` of a notebook, return a string with all tags separated by
-    `|`.
+    Given a `cell` of a notebook, return a string with all tags that match
+    `tag_regex` separated by `|`.
     """
+    if tag_regex is None:
+        tag_regex = UNIVERSAL_REGEX
     try:
-        return tag_seperator.join(cell["metadata"]["tags"])
+        return tag_seperator.join([tag for tag in cell["metadata"]["tags"] if
+            bool(re.match(pattern=tag_regex, string=tag))])
     except KeyError:
         return None
 
@@ -146,7 +150,7 @@ def check(
     feedback_md = ""
 
     for cell in nb_node["cells"]:
-        if get_score(cell) > 0:
+        if get_score(cell, score_regex_pattern=score_regex_pattern) > 0:
             score = get_score(cell)
             maximum_score += score
             try:
@@ -172,17 +176,23 @@ Assertion passed:
 
 
 def check_tags_match(
-    source_nb_node: dict, nb_node: dict, tag_seperator: str = "|"
+    source_nb_node: dict, nb_node: dict, tag_seperator: str = "|",
+    tag_regex=None,
 ) -> bool:
     """
-    This checks if the count of tags on each cell matches. Note that it does not
+    This checks if the count of tags that match `tag_regex` on each cell matches. Note that it does not
     necessarily guarantee that the tags are on the same cells.
     """
+    if tag_regex is None:
+        tag_regex = ANSWER_TAG_REGEX
     source_nb_tags = [
-        get_tags(cell, tag_seperator=tag_seperator) for cell in source_nb_node["cells"]
+        get_tags(cell, tag_seperator=tag_seperator, tag_regex=tag_regex) for cell in source_nb_node["cells"]
     ]
-    nb_tags = [get_tags(cell, tag_seperator=tag_seperator) for cell in nb_node["cells"]]
+    nb_tags = [get_tags(cell, tag_seperator=tag_seperator, tag_regex=tag_regex) for cell in nb_node["cells"]]
 
-    source_nb_tag_counter = collections.Counter(source_nb_tags)
-    nb_tag_counter = collections.Counter(nb_tags)
+    # TODO I do not really understand why the `["", None]` is required here.
+    # This is unwanted behaviour from `get_tags` which is returning empty tags. 
+    # Aim to remove this.`
+    source_nb_tag_counter = collections.Counter([tag for tag in source_nb_tags if tag not in ["", None]])
+    nb_tag_counter = collections.Counter([tag for tag in nb_tags if tag not in ["", None]])
     return source_nb_tag_counter == nb_tag_counter

@@ -28,10 +28,6 @@ def test_add_checks_creates_notebook_with_assertions():
     assert "assert _ == 55" in str(nb_with_checks)
     assert "sum(i for i in range(10))" in str(nb_with_checks)
 
-    output_path = NB_PATH / "feedback.ipynb"
-    nbchkr.utils.write(output_path=output_path, nb_node=nb_with_checks)
-    # TODO Delete feedback.ipynb
-
 
 def test_check_with_no_errors_for_original_source():
     nb_node = nbchkr.utils.read(nb_path=NB_PATH / "test.ipynb")

@@ -16,15 +16,12 @@ def test_check_tags_when_they_match():
     )
 
 
-def test_check_tags_when_they_do_not_match():
-    """
-    The tags should not match here as they the check tags have not been added.
-    """
+def test_check_tags_when_only_the_answer_tags_match():
     nb_node = nbchkr.utils.read(nb_path=NB_PATH / "submission.ipynb")
     source_nb_node = nbchkr.utils.read(nb_path=NB_PATH / "test.ipynb")
     assert (
         nbchkr.utils.check_tags_match(source_nb_node=source_nb_node, nb_node=nb_node)
-        is False
+        is True
     )
 
 

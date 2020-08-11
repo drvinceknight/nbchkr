@@ -57,9 +57,24 @@ def test_release():
 
 def test_check_on_a_single_notebook():
     # todo add better tear down.
-    output = subprocess.run(["nbchkr", "check", "--source",
-    f"{nb_path}/test.ipynb", "--submitted", f"{nb_path}/submission.ipynb", "--feedback_suffix", "_feedback.md", "--output", "output.csv"], capture_output=true)
-    expected_stdout = str.encode(f'{nb_path}/submission.ipynb checked against {nb_path}/test.ipynb. feedback written to {nb_path}/submission.ipynb_feedback.md and output written to output.csv.\n')
+    output = subprocess.run(
+        [
+            "nbchkr",
+            "check",
+            "--source",
+            f"{nb_path}/test.ipynb",
+            "--submitted",
+            f"{nb_path}/submission.ipynb",
+            "--feedback_suffix",
+            "_feedback.md",
+            "--output",
+            "output.csv",
+        ],
+        capture_output=true,
+    )
+    expected_stdout = str.encode(
+        f"{nb_path}/submission.ipynb checked against {nb_path}/test.ipynb. feedback written to {nb_path}/submission.ipynb_feedback.md and output written to output.csv.\n"
+    )
     # assert output.stderr == b''  # todo fix the warning error
     assert output.stdout == expected_stdout
 

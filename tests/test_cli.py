@@ -95,4 +95,6 @@ def test_check_on_a_collection_of_notebooks():
     )
     # assert output.stderr == b''  # TODO Fix the warning error
     assert output.stdout == expected_stdout
-    assert filecmp.cmp(f1="output.csv", f2=f"{NB_PATH}/expected_output.csv", shallow=True)
+    assert filecmp.cmp(
+        f1="output.csv", f2=f"{NB_PATH}/expected_output.csv", shallow=True
+    )

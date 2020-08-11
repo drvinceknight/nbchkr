@@ -55,6 +55,7 @@ def check(source, submitted, feedback_suffix, output):
                 with open(f"{path}{feedback_suffix}", "w") as f:
                     f.write(feedback_md)
 
+                print([path, score, maximum_score, tags_match])
                 csv_writer.writerow([path, score, maximum_score, tags_match])
                 click.echo(
                     f"{path} checked against {source}. Feedback written to {path}{feedback_suffix} and output written to {output}."

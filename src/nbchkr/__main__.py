@@ -1,7 +1,8 @@
 import csv
-import pathlib
-import click
 import glob
+import pathlib
+
+import click
 
 import nbchkr.utils
 

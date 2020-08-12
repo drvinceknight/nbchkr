@@ -2,8 +2,7 @@ import collections
 import json
 import pathlib
 import re
-
-from typing import Tuple, Optional
+from typing import Optional, Tuple
 
 import nbformat  # type: ignore
 from nbconvert.preprocessors import ExecutePreprocessor  # type: ignore

@@ -9,6 +9,7 @@ import nbchkr.utils
 
 @click.group()
 def main():
+    """Create and check notebook assignments."""
     pass
 
 

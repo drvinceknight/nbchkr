@@ -13,6 +13,8 @@ def test_help_call():
     output = subprocess.run(["nbchkr", "--help"], capture_output=True)
     expected_stdout = b"""Usage: nbchkr [OPTIONS] COMMAND [ARGS]...
 
+  Create and check notebook assignments.
+
 Options:
   --help  Show this message and exit.
 

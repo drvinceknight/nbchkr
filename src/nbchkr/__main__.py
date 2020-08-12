@@ -8,6 +8,11 @@ import nbchkr.utils
 
 @click.group()
 def main():
+    """
+    The main function called by the command line tool.
+
+    The other function in this module are commands of it.
+    """
     pass
 
 
@@ -15,6 +20,9 @@ def main():
 @click.option("--source", help="The path to the source ipynb file")
 @click.option("--output", help="The path to the destination ipynb file")
 def release(source, output):
+    """
+    This releases a piece of coursework by removing the solutions.
+    """
     nb_path = pathlib.Path(source)
     nb_node = nbchkr.utils.read(nb_path=nb_path)
     nbchkr.utils.remove_cells(nb_node=nb_node)
@@ -32,6 +40,9 @@ def release(source, output):
 )
 @click.option("--output", help="The path to output comma separated value file")
 def check(source, submitted, feedback_suffix, output):
+    """
+    This checks a given submission against a source.
+    """
 
     source_nb_node = nbchkr.utils.read(source)
     with open(f"{output}", "w") as f:

@@ -17,8 +17,8 @@ Options:
   --help  Show this message and exit.
 
 Commands:
-  check
-  release
+  check    This checks a given submission against a source.
+  release  This releases a piece of coursework by removing the solutions...
 """
     assert output.stdout == expected_stdout
     assert output.stderr == b""

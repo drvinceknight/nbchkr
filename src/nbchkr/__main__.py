@@ -9,11 +9,6 @@ import nbchkr.utils
 
 @click.group()
 def main():
-    """
-    The main function called by the command line tool.
-
-    The other function in this module are commands of it.
-    """
     pass
 
 
@@ -22,7 +17,7 @@ def main():
 @click.option("--output", help="The path to the destination ipynb file")
 def release(source, output):
     """
-    This releases a piece of coursework by removing the solutions.
+    This releases a piece of coursework by removing the solutions from a source.
     """
     nb_path = pathlib.Path(source)
     nb_node = nbchkr.utils.read(nb_path=nb_path)

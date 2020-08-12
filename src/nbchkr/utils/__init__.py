@@ -11,6 +11,10 @@ TAGS_REGEX_PATTERNS_TO_IGNORE = ["hide", r"score:\d"]
 SOLUTION_REGEX = re.compile(
     r"### BEGIN SOLUTION[\s\S](.*?)[\s\S]### END SOLUTION", re.DOTALL
 )
+SOLUTION_REPL = """### BEGIN SOLUTION
+
+
+### END SOLUTION"""
 UNIVERSAL_REGEX = re.compile(r".", re.DOTALL)
 ANSWER_TAG_REGEX = r"answer:*"
 SCORE_REGEX = re.compile(r"score:(\d+)")
@@ -28,7 +32,7 @@ def read(nb_path: pathlib.Path, as_version: int = 4) -> dict:
 
 
 def remove_cells(
-    nb_node, tags_regex_patterns_to_ignore=None, solution_regex=None
+    nb_node, tags_regex_patterns_to_ignore=None, solution_regex=None, solution_repl=None
 ):  # TODO Add typing to this function
     """
     Given a dictionary representation of a notebook, removes:
@@ -42,6 +46,8 @@ def remove_cells(
         tags_regex_patterns_to_ignore = TAGS_REGEX_PATTERNS_TO_IGNORE
     if solution_regex is None:
         solution_regex = SOLUTION_REGEX
+    if solution_repl is None:
+        solution_repl = SOLUTION_REPL
     cells = []
     for cell in nb_node["cells"]:
         if "tags" not in cell["metadata"] or all(
@@ -51,7 +57,9 @@ def remove_cells(
         ):
             try:
                 source = "".join(cell["source"])
-                new_source = re.sub(pattern=solution_regex, repl="", string=source)
+                new_source = re.sub(
+                    pattern=solution_regex, repl=solution_repl, string=source
+                )
                 cell["source"] = new_source
 
                 if bool(re.match(pattern=solution_regex, string=source)) is True:

@@ -65,11 +65,15 @@ def test_remove_solution_and_keep_original_nb_node_unchanged():
     assert "sum(i for i in range(11))" in str(nb_node)
     assert "sum(i for i in range(n + 1))" in str(nb_node)
     assert "55" in str(nb_node)
+    assert "### BEGIN SOLUTION" in str(nb_node)
+    assert "### END SOLUTION" in str(nb_node)
 
     student_nb = nbchkr.utils.remove_cells(nb_node=nb_node)
     assert "sum(i for i in range(11))" not in str(student_nb)
     assert "sum(i for i in range(n + 1))" not in str(student_nb)
     assert "55" not in str(student_nb)
+    assert "BEGIN SOLUTION" in str(student_nb)
+    assert "END SOLUTION" in str(student_nb)
     # TODO Add test that shows wrong behaviour of changing the imported JSON
     # and document.
     assert "sum(i for i in range(n + 1))" not in str(nb_node)

@@ -4,7 +4,7 @@ Tests for the command line tool.
 import subprocess
 import pathlib
 import nbchkr
-import filecmp
+import csv
 
 from test_release import NB_PATH
 
@@ -56,27 +56,48 @@ def test_release():
 
 
 def test_check_on_a_single_notebook():
-    # todo add better tear down.
-    output = subprocess.run(
-        [
-            "nbchkr",
-            "check",
-            "--source",
-            f"{nb_path}/test.ipynb",
-            "--submitted",
-            f"{nb_path}/submission.ipynb",
-            "--feedback_suffix",
-            "_feedback.md",
-            "--output",
-            "output.csv",
-        ],
-        capture_output=true,
-    )
-    expected_stdout = str.encode(
-        f"{nb_path}/submission.ipynb checked against {nb_path}/test.ipynb. feedback written to {nb_path}/submission.ipynb_feedback.md and output written to output.csv.\n"
-    )
-    # assert output.stderr == b''  # todo fix the warning error
-    assert output.stdout == expected_stdout
+    # TODO add better tear down.
+
+    submission_nbs = [
+        "submission.ipynb",
+        "submission_with_missing_tags.ipynb",
+        "test.ipynb",
+    ]
+    expected_outputs = [["2", "10", "True"], ["2", "10", "False"], ["10", "10", "True"]]
+    for submission_nb, expected_output in zip(submission_nbs, expected_outputs):
+        output = subprocess.run(
+            [
+                "nbchkr",
+                "check",
+                "--source",
+                f"{NB_PATH}/test.ipynb",
+                "--submitted",
+                f"{NB_PATH}/{submission_nb}",
+                "--feedback_suffix",
+                "_feedback.md",
+                "--output",
+                "output.csv",
+            ],
+            capture_output=True,
+        )
+        expected_stdout = str.encode(
+            f"{NB_PATH}/{submission_nb} checked against {NB_PATH}/test.ipynb. Feedback written to {NB_PATH}/{submission_nb}_feedback.md and output written to output.csv.\n"
+        )
+        if submission_nb == "submission_with_missing_tags.ipynb":
+            expected_stdout += str.encode(
+                f"WARNING: {NB_PATH}/{submission_nb} has tags that do not match the source.\n"
+            )
+        assert output.stdout == expected_stdout
+
+        with open("output.csv", "r") as f:
+            csv_reader = csv.reader(f)
+            output = list(csv_reader)
+
+        expected_output = [
+            ["Submission filepath", "Score", "Maximum score", "Tags match"],
+            [f"{NB_PATH}/{submission_nb}"] + expected_output,
+        ]
+        assert output == expected_output
 
 
 def test_check_on_a_collection_of_notebooks():
@@ -110,6 +131,15 @@ def test_check_on_a_collection_of_notebooks():
     )
     # assert output.stderr == b''  # TODO Fix the warning error
     assert output.stdout == expected_stdout
-    assert filecmp.cmp(
-        f1="output.csv", f2=f"{NB_PATH}/expected_output.csv", shallow=True
-    )
+
+    with open("output.csv", "r") as f:
+        csv_reader = csv.reader(f)
+        output = list(csv_reader)
+
+    expected_output = [
+        ["Submission filepath", "Score", "Maximum score", "Tags match"],
+        [f"{NB_PATH}/submission.ipynb", "2", "10", "True"],
+        [f"{NB_PATH}/submission_with_missing_tags.ipynb", "2", "10", "False"],
+        [f"{NB_PATH}/test.ipynb", "10", "10", "True"],
+    ]
+    assert output == expected_output

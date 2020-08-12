@@ -77,22 +77,27 @@ def write(output_path: pathlib.Path, nb_node: dict):
 def add_checks(nb_node: dict, source_nb_node: dict, answer_tag_regex=None) -> dict:
     """
     Given a `nb_node` and a source `source_nb_node`, add the cells in
-    `source_nb` with tags matching `answer_tag_regex` to `source_nb_node`
+    `nb_node` with tags matching `answer_tag_regex` to `source_nb_node`
 
     This is used to add a student's answers to the source notebook.
     """
     if answer_tag_regex is None:
         answer_tag_regex = ANSWER_TAG_REGEX
+
     answers = {
         tag: cell
         for cell in nb_node["cells"]
         for tag in cell["metadata"].get("tags", [])
         if bool(re.match(pattern=answer_tag_regex, string=tag))
     }
+
     for i, cell in enumerate(source_nb_node["cells"]):
         for tag in cell["metadata"].get("tags", []):
             if tag in answers:
                 source_nb_node["cells"][i] = answers[tag]
+            elif bool(re.match(pattern=answer_tag_regex, string=tag)):
+                source_nb_node["cells"][i]["source"] = ""
+
     return source_nb_node
 
 

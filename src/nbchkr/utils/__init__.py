@@ -32,8 +32,7 @@ def read(nb_path: pathlib.Path, as_version: int = 4) -> dict:
 
 
 def remove_cells(
-    nb_node, tags_regex_patterns_to_ignore=None, solution_regex=None,
-    solution_repl=None
+    nb_node, tags_regex_patterns_to_ignore=None, solution_regex=None, solution_repl=None
 ):  # TODO Add typing to this function
     """
     Given a dictionary representation of a notebook, removes:
@@ -58,7 +57,9 @@ def remove_cells(
         ):
             try:
                 source = "".join(cell["source"])
-                new_source = re.sub(pattern=solution_regex, repl=solution_repl, string=source)
+                new_source = re.sub(
+                    pattern=solution_regex, repl=solution_repl, string=source
+                )
                 cell["source"] = new_source
 
                 if bool(re.match(pattern=solution_regex, string=source)) is True:

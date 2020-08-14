@@ -171,11 +171,11 @@ How to release an assignment
 ----------------------------
 
 Now we can take that source notebook and create an assignment that can be given
-to students. To do this, we use the command line tool that comes with `nbchkr`::
+to students. To do this, we use the command line tool that comes with :code:`nbchkr`::
 
     $ nbchkr release --source main.ipynb --output assignement.ipynb
 
-This creates a notebook `assignment.ipynb` with the answers and checks removed.
+This creates a notebook an :code:`assignment.ipynb` with the answers and checks removed.
 
 TODO Add link to notebookk
 
@@ -185,10 +185,42 @@ Check student assignments and generate feedback
 Assuming we have a class of 3 students who each submitted a notebook with the
 following naming convention::
 
-    ssignement_<student_number>.ipynb
+    assignement_<student_number>.ipynb
 
-These notebooks are all put in the `submissions/` directory.
+These notebooks are all put in a :code:`submissions/` directory.
 TODO Add link to download
+
+To check them and generate the feedback we again use the :code:`nbchkr` command
+line tool::
+
+    $ nbchkr check --source main.ipynb --submitted "submissions/*.ipynb" --feedback_suffix -feedback.md --output data.csv
+
+This has gone through and checked each notebook, you can see the output here:
+
+.. csv-table:: The summary results
+   :file: assignement/data.csv
+   :widths: 50, 10, 30, 15
+   :header-rows: 1
+
+We see that `assignement_03.ipynb` has a :code:`False` flag under the
+:code:`Tags Match` heading: this is because the student must have deleted one of
+the cells with a required tag. :code:`nbchkr` does its best to check them anyway
+but this is a notebook that we should check manually.
+
+In the submissions directory, 3 markdown files have been written with feedback
+to the students:
+
+:code:`assignement_01.ipynb-feedback.md`:
+
+.. literalinclude:: assignement/submissions/assignement_01.ipynb-feedback.md
+
+:code:`assignement_02.ipynb-feedback.md`:
+
+.. literalinclude:: assignement/submissions/assignement_02.ipynb-feedback.md
+
+:code:`assignement_03.ipynb-feedback.md`:
+
+.. literalinclude:: assignement/submissions/assignement_03.ipynb-feedback.md
 
 .. toctree::
    :maxdepth: 2

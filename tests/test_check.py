@@ -47,22 +47,17 @@ def test_check_with_no_errors_for_original_source():
     assert maximum_score == expected_score
 
     expected_feedback = """
-Assertion passed:
+---
 
-    assert _ == 55, "That is not the correct answer"
+## answer:q1
 
 3 / 3
 
-Assertion passed:
+---
 
-    assert sum_of_digits.__doc__ is not None, "You did not include a docstring"
+## answer:q2
 
 2 / 2
-
-Assertion passed:
-
-    for n in range(1, 10):
-    assert sum_of_digits(n=n) == n * (n + 1) / 2, f"You function did not give the correct score for n={n}"
 
 5 / 5
 """
@@ -79,13 +74,17 @@ def test_check_with_no_errors_for_test_submission():
     assert score == expected_score
     assert maximum_score == expected_maximum_score
     expected_feedback = """
+---
+
+## answer:q1
+
 That is not the correct answer
 
 0 / 3
 
-Assertion passed:
+---
 
-    assert sum_of_digits.__doc__ is not None, "You did not include a docstring"
+## answer:q2
 
 2 / 2
 
@@ -106,13 +105,17 @@ def test_check_with_no_errors_for_test_submission_with_missing_tags():
     assert score == expected_score
     assert maximum_score == expected_maximum_score
     expected_feedback = """
+---
+
+## answer:q1
+
 That is not the correct answer
 
 0 / 3
 
-Assertion passed:
+---
 
-    assert sum_of_digits.__doc__ is not None, "You did not include a docstring"
+## answer:q2
 
 2 / 2
 

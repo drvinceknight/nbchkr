@@ -145,7 +145,10 @@ def get_score(cell: dict, score_regex_pattern=None) -> int:
 
 
 def check(
-    nb_node: dict, timeout: int = 600, score_regex_pattern=None
+    nb_node: dict,
+    timeout: int = 600,
+    score_regex_pattern=None,
+    answer_tag_pattern=None,
 ) -> Tuple[int, int, str]:
     """
     Given a `nb_node`, it executes the notebook and keep track of the score.
@@ -158,7 +161,8 @@ def check(
     """
     if score_regex_pattern is None:
         score_regex_pattern = SCORE_REGEX
-
+    if answer_tag_pattern is None:
+        answer_tag_pattern = ANSWER_TAG_REGEX
     ep = ExecutePreprocessor(timeout=timeout, allow_errors=True)
     ep.preprocess(nb_node)
 
@@ -167,6 +171,16 @@ def check(
     feedback_md = ""
 
     for cell in nb_node["cells"]:
+        answer_tags = get_tags(cell=cell, tag_regex=answer_tag_pattern)
+        if (
+            answer_tags is not None
+            and len(get_tags(cell=cell, tag_regex=answer_tag_pattern)) > 0
+        ):
+            feedback_md += f"""
+---
+
+## {answer_tags}
+"""
         # TODO Use the walrus operator here.
         if get_score(cell, score_regex_pattern=score_regex_pattern) > 0:
             score = get_score(cell)
@@ -181,12 +195,7 @@ def check(
 0 / {score}
 """
             except IndexError:
-                assertion = cell["source"]
                 feedback_md += f"""
-Assertion passed:
-
-    {assertion}
-
 {score} / {score}
 """
                 total_score += score

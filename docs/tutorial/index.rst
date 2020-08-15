@@ -1,6 +1,12 @@
 Tutorial
 ========
 
+This tutorial will take you three the main steps of using :code:`nbchkr`:
+
+- Write an assignment with solutions and checks.
+- Create a release notebook with the solutions and checks removed.
+- For a collection of submissions: check the work and create individual feedback.
+
 How to write an assignment
 --------------------------
 
@@ -10,17 +16,17 @@ Initial setup
 Open a Jupyter notebook, we will choose to name it :code:`main.ipynb` (but the
 name is not important).
 
-IMAGE
+.. image:: /_static/tutorial/create_new_notebook.png
 
 On the Jupyter toolbar, click on :code:`View` and then :code:`Cell Toolbar` and
 then :code:`Tags`.
 
-IMAGE
+.. image:: /_static/tutorial/add_tags.png
 
 This should make the native tag menu available to you on every cell in your
 Jupyter notebook.
 
-IMAGE
+.. image:: /_static/tutorial/seeing_the_tags_bar.png
 
 We can now start writing our assignment.
 
@@ -30,7 +36,7 @@ Writing text for a question
 Let us write a markdown cell with some instructions and a question that we want
 to ask our students::
 
-    # Class assignement
+    # Class assignment
 
     We will use this assignment to solidify our understanding of using Python to
     carry out some numerical operations and also write functions.
@@ -47,11 +53,11 @@ to ask our students::
 Be sure to indicate that that cell is a :code:`markdown` cell and not the usual
 :code:`code` cell.
 
-IMAGE
+.. image:: /_static/tutorial/changing_the_cell_type.png
 
 Once you run that cell it should like like the following:
 
-IMAGE
+.. image:: /_static/tutorial/seeing_the_rendered_cell.png
 
 Writing the answer to a question
 ++++++++++++++++++++++++++++++++
@@ -70,7 +76,7 @@ answer cell, we do this by adding `answer:q1` to tags.
 
 Everything should now look like the following:
 
-IMAGE
+.. image:: /_static/tutorial/seeing_the_answer_tag.png
 
 Writing checks for the answer
 +++++++++++++++++++++++++++++
@@ -94,7 +100,7 @@ This will be worth 3 points so let us add the tag: :code:`score:3`.
 
 Everything should now look like the following:
 
-IMAGE
+.. image:: /_static/tutorial/seeing_the_check_tags.png
 
 Writing another question
 ++++++++++++++++++++++++
@@ -163,9 +169,7 @@ We will also include specific checks for the actual answer::
 IF you would like to see a final version of this notebook you can find it here.
 
 IF you would like to see a final version of this notebook
-you can find it here.
-
-TODO Add link to notebookk
+you can find it :download:`here <./assignment/main.ipynb>`.
 
 How to release an assignment
 ----------------------------
@@ -173,11 +177,10 @@ How to release an assignment
 Now we can take that source notebook and create an assignment that can be given
 to students. To do this, we use the command line tool that comes with :code:`nbchkr`::
 
-    $ nbchkr release --source main.ipynb --output assignement.ipynb
+    $ nbchkr release --source main.ipynb --output assignment.ipynb
 
-This creates a notebook an :code:`assignment.ipynb` with the answers and checks removed.
-
-TODO Add link to notebookk
+This creates :download:`assignment.ipynb <./assignment/assignment.ipynb>` with
+the answers and checks removed.
 
 Check student assignments and generate feedback
 ------------------------------------------------
@@ -185,10 +188,13 @@ Check student assignments and generate feedback
 Assuming we have a class of 3 students who each submitted a notebook with the
 following naming convention::
 
-    assignement_<student_number>.ipynb
+    assignment_<student_number>.ipynb
 
-These notebooks are all put in a :code:`submissions/` directory.
-TODO Add link to download
+These notebooks are all put in a :code:`submissions/` directory:
+
+- :download:`assignment_01.ipynb <./assignment/submissions/assignment_01.ipynb>`
+- :download:`assignment_02.ipynb <./assignment/submissions/assignment_02.ipynb>`
+- :download:`assignment_03.ipynb <./assignment/submissions/assignment_03.ipynb>`
 
 To check them and generate the feedback we again use the :code:`nbchkr` command
 line tool::
@@ -198,11 +204,11 @@ line tool::
 This has gone through and checked each notebook, you can see the output here:
 
 .. csv-table:: The summary results
-   :file: assignement/data.csv
+   :file: assignment/data.csv
    :widths: 50, 10, 30, 15
    :header-rows: 1
 
-We see that `assignement_03.ipynb` has a :code:`False` flag under the
+We see that `assignment_03.ipynb` has a :code:`False` flag under the
 :code:`Tags Match` heading: this is because the student must have deleted one of
 the cells with a required tag. :code:`nbchkr` does its best to check them anyway
 but this is a notebook that we should check manually.
@@ -210,17 +216,17 @@ but this is a notebook that we should check manually.
 In the submissions directory, 3 markdown files have been written with feedback
 to the students:
 
-:code:`assignement_01.ipynb-feedback.md`:
+:code:`assignment_01.ipynb-feedback.md`:
 
-.. literalinclude:: assignement/submissions/assignement_01.ipynb-feedback.md
+.. literalinclude:: assignment/submissions/assignment_01.ipynb-feedback.md
 
-:code:`assignement_02.ipynb-feedback.md`:
+:code:`assignment_02.ipynb-feedback.md`:
 
-.. literalinclude:: assignement/submissions/assignement_02.ipynb-feedback.md
+.. literalinclude:: assignment/submissions/assignment_02.ipynb-feedback.md
 
-:code:`assignement_03.ipynb-feedback.md`:
+:code:`assignment_03.ipynb-feedback.md`:
 
-.. literalinclude:: assignement/submissions/assignement_03.ipynb-feedback.md
+.. literalinclude:: assignment/submissions/assignment_03.ipynb-feedback.md
 
 .. toctree::
    :maxdepth: 2

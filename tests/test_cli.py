@@ -164,7 +164,7 @@ def test_check_on_documentation_exampless():
             "--submitted",
             f"{docs_path}/submissions/*.ipynb",
             "--feedback_suffix",
-            "_feedback.md",
+            "_feedback.testmd",
             "--output",
             "data.csv",
         ],
@@ -182,3 +182,16 @@ def test_check_on_documentation_exampless():
         [f"{docs_path}/submissions/assignment_03.ipynb", "4", "11", "False"],
     ]
     assert output == expected_output
+
+    submissions_directory = pathlib.Path(f"{docs_path}/submissions/")
+    number_of_feedback_files = 0
+
+    for feedback_path in submissions_directory.glob("*.ipynb_feedback.testmd"):
+        number_of_feedback_files += 1
+        expected_feedback_path = pathlib.Path(f"{docs_path}/submissions/{feedback_path.stem}.md")
+        feedback = feedback_path.read_text()
+        expected_feedback = expected_feedback_path.read_text()
+        assert feedback == expected_feedback
+
+    expected_number_of_feedback_files = 3
+    assert number_of_feedback_files == expected_number_of_feedback_files

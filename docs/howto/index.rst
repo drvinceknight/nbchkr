@@ -10,3 +10,4 @@ How to:
    :maxdepth: 2
    :caption: Contents:
    write_a_source_assignement.rst
+   release_a_source_assignement.rst

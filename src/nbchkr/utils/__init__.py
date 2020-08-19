@@ -2,7 +2,7 @@ import collections
 import json
 import pathlib
 import re
-from typing import Optional, Tuple
+from typing import Tuple
 
 import nbformat  # type: ignore
 from nbconvert.preprocessors import ExecutePreprocessor  # type: ignore
@@ -108,7 +108,7 @@ def add_checks(nb_node: dict, source_nb_node: dict, answer_tag_regex=None) -> di
     return source_nb_node
 
 
-def get_tags(cell: dict, tag_seperator: str = "|", tag_regex=None) -> Optional[str]:
+def get_tags(cell: dict, tag_seperator: str = "|", tag_regex=None) -> str:
     """
     Given a `cell` of a notebook, return a string with all tags that match
     `tag_regex` separated by `|`.
@@ -124,7 +124,7 @@ def get_tags(cell: dict, tag_seperator: str = "|", tag_regex=None) -> Optional[s
             ]
         )
     except KeyError:
-        return None
+        return ""
 
 
 def get_score(cell: dict, score_regex_pattern=None) -> int:
@@ -135,7 +135,7 @@ def get_score(cell: dict, score_regex_pattern=None) -> int:
     if score_regex_pattern is None:
         score_regex_pattern = SCORE_REGEX
     tags = get_tags(cell)
-    if tags is not None:
+    if tags != "":
         search = re.search(pattern=score_regex_pattern, string=tags)
         try:
             return int(search.group(1))  # type: ignore

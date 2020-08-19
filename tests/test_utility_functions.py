@@ -22,10 +22,10 @@ def test_get_tags_with_given_regex():
     assert obtained_tags == "answer:q1|answer:q2"
 
 
-def test_get_None_when_there_are_no_tags():
+def test_get_empty_string_when_there_are_no_tags():
     cell = {"metadata": {"not_tags": ["tag_1", "tag_2"]}}
-    assert nbchkr.utils.get_tags(cell=cell) is None
-    assert nbchkr.utils.get_tags(cell=cell, tag_seperator="@") is None
+    assert nbchkr.utils.get_tags(cell=cell) == ""
+    assert nbchkr.utils.get_tags(cell=cell, tag_seperator="@") == ""
 
 
 def test_get_score():

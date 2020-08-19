@@ -60,3 +60,9 @@ jobs:
     - name: Check static typing
       run: |
         python -m mypy src/ --pretty
+    - name: Install documentation dependencies
+      run: |
+        python -m pip install sphinx
+    - name: Check that documentation builds
+      run: |
+        cd docs; make html

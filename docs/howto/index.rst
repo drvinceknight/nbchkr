@@ -9,5 +9,6 @@ How to:
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
-   write_a_source_assignement.rst
-   release_a_source_assignement.rst
+
+   write_an_assignment.rst
+   release_a_source_assignment.rst

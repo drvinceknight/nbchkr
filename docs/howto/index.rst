@@ -12,3 +12,4 @@ How to:
 
    write_an_assignment.rst
    release_a_source_assignment.rst
+   check_a_submission.rst

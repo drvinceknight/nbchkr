@@ -2,7 +2,7 @@ import collections
 import json
 import pathlib
 import re
-from typing import Optional, Tuple
+from typing import Tuple
 
 import nbformat  # type: ignore
 from nbconvert.preprocessors import ExecutePreprocessor  # type: ignore
@@ -108,7 +108,7 @@ def add_checks(nb_node: dict, source_nb_node: dict, answer_tag_regex=None) -> di
     return source_nb_node
 
 
-def get_tags(cell: dict, tag_seperator: str = "|", tag_regex=None) -> Optional[str]:
+def get_tags(cell: dict, tag_seperator: str = "|", tag_regex=None) -> str:
     """
     Given a `cell` of a notebook, return a string with all tags that match
     `tag_regex` separated by `|`.
@@ -124,7 +124,7 @@ def get_tags(cell: dict, tag_seperator: str = "|", tag_regex=None) -> Optional[s
             ]
         )
     except KeyError:
-        return None
+        return ""
 
 
 def get_score(cell: dict, score_regex_pattern=None) -> int:
@@ -135,7 +135,7 @@ def get_score(cell: dict, score_regex_pattern=None) -> int:
     if score_regex_pattern is None:
         score_regex_pattern = SCORE_REGEX
     tags = get_tags(cell)
-    if tags is not None:
+    if tags != "":
         search = re.search(pattern=score_regex_pattern, string=tags)
         try:
             return int(search.group(1))  # type: ignore
@@ -145,7 +145,10 @@ def get_score(cell: dict, score_regex_pattern=None) -> int:
 
 
 def check(
-    nb_node: dict, timeout: int = 600, score_regex_pattern=None
+    nb_node: dict,
+    timeout: int = 600,
+    score_regex_pattern=None,
+    answer_tag_pattern=None,
 ) -> Tuple[int, int, str]:
     """
     Given a `nb_node`, it executes the notebook and keep track of the score.
@@ -158,7 +161,8 @@ def check(
     """
     if score_regex_pattern is None:
         score_regex_pattern = SCORE_REGEX
-
+    if answer_tag_pattern is None:
+        answer_tag_pattern = ANSWER_TAG_REGEX
     ep = ExecutePreprocessor(timeout=timeout, allow_errors=True)
     ep.preprocess(nb_node)
 
@@ -167,6 +171,16 @@ def check(
     feedback_md = ""
 
     for cell in nb_node["cells"]:
+        answer_tags = get_tags(cell=cell, tag_regex=answer_tag_pattern)
+        if (
+            answer_tags is not None
+            and len(get_tags(cell=cell, tag_regex=answer_tag_pattern)) > 0
+        ):
+            feedback_md += f"""
+---
+
+## {answer_tags}
+"""
         # TODO Use the walrus operator here.
         if get_score(cell, score_regex_pattern=score_regex_pattern) > 0:
             score = get_score(cell)
@@ -181,12 +195,7 @@ def check(
 0 / {score}
 """
             except IndexError:
-                assertion = cell["source"]
                 feedback_md += f"""
-Assertion passed:
-
-    {assertion}
-
 {score} / {score}
 """
                 total_score += score

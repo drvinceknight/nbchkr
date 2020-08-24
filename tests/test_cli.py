@@ -145,3 +145,55 @@ def test_check_on_a_collection_of_notebooks():
         [f"{NB_PATH}/test.ipynb", "10", "10", "True"],
     ]
     assert output == expected_output
+
+
+def test_check_on_documentation_exampless():
+    """
+    Note that this also serves as a test of the tutorial commands: if there is a
+    regression that causes these tests to fail the documentation might need to
+    be updated.
+    """
+    docs_path = f"{NB_PATH}/../../docs/tutorial/assignment"
+    # TODO Add better tear down.
+    output = subprocess.run(
+        [
+            "nbchkr",
+            "check",
+            "--source",
+            f"{docs_path}/main.ipynb",
+            "--submitted",
+            f"{docs_path}/submissions/*.ipynb",
+            "--feedback_suffix",
+            "_feedback.testmd",
+            "--output",
+            "data.csv",
+        ],
+        capture_output=True,
+    )
+
+    with open("data.csv", "r") as f:
+        csv_reader = csv.reader(f)
+        output = list(csv_reader)
+
+    expected_output = [
+        ["Submission filepath", "Score", "Maximum score", "Tags match"],
+        [f"{docs_path}/submissions/assignment_01.ipynb", "2", "11", "True"],
+        [f"{docs_path}/submissions/assignment_02.ipynb", "10", "11", "True"],
+        [f"{docs_path}/submissions/assignment_03.ipynb", "4", "11", "False"],
+    ]
+    assert output == expected_output
+
+    submissions_directory = pathlib.Path(f"{docs_path}/submissions/")
+    number_of_feedback_files = 0
+
+    for feedback_path in submissions_directory.glob("*.ipynb_feedback.testmd"):
+        number_of_feedback_files += 1
+        expected_feedback_path = pathlib.Path(
+            f"{docs_path}/submissions/{feedback_path.stem}.md"
+        )
+        feedback = feedback_path.read_text()
+        expected_feedback = expected_feedback_path.read_text()
+        assert feedback == expected_feedback
+
+    expected_number_of_feedback_files = 3
+    assert number_of_feedback_files == expected_number_of_feedback_files

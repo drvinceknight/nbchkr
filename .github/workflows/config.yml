@@ -63,6 +63,7 @@ jobs:
     - name: Install documentation dependencies
       run: |
         python -m pip install sphinx
+        python -m pip install sphinx_rtd_theme
     - name: Check that documentation builds
       run: |
         cd docs; make html

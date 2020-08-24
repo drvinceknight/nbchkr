@@ -6,3 +6,4 @@ Reference
    :caption: Contents:
 
    bibliography.rst
+   changelog.rst

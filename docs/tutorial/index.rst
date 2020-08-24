@@ -9,8 +9,8 @@ This tutorial will take you three the main steps of using :code:`nbchkr`:
 - Create a release notebook with the solutions and checks removed.
 - For a collection of submissions: check the work and create individual feedback.
 
-How to install nbchkr
----------------------
+Installing :code:`nbchkr`
+-------------------------
 
 To install the latest release of :code:`nbchkr`, at a command line interface run
 the following command::
@@ -18,8 +18,8 @@ the following command::
     $ python -m pip install nbchkr
 
 
-How to write an assignment
---------------------------
+Writing an assignment
+---------------------
 
 Initial setup
 +++++++++++++
@@ -182,8 +182,8 @@ IF you would like to see a final version of this notebook you can find it here.
 IF you would like to see a final version of this notebook
 you can find it :download:`here <./assignment/main.ipynb>`.
 
-How to release an assignment
-----------------------------
+Releasing an assignment
+-----------------------
 
 Now we can take that source notebook and create an assignment that can be given
 to students. To do this, we use the command line tool that comes with :code:`nbchkr`::
@@ -193,8 +193,8 @@ to students. To do this, we use the command line tool that comes with :code:`nbc
 This creates :download:`assignment.ipynb <./assignment/assignment.ipynb>` with
 the answers and checks removed.
 
-Check student assignments and generate feedback
-------------------------------------------------
+Checking student assignments and generating feedback
+----------------------------------------------------
 
 Assuming we have a class of 3 students who each submitted a notebook with the
 following naming convention::

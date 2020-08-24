@@ -7,6 +7,15 @@ This tutorial will take you three the main steps of using :code:`nbchkr`:
 - Create a release notebook with the solutions and checks removed.
 - For a collection of submissions: check the work and create individual feedback.
 
+How to install nbchkr
+---------------------
+
+To install the latest release of :code:`nbchkr`, at a command line interface run
+the following command::
+
+    $ python -m pip install nbchkr
+
+
 How to write an assignment
 --------------------------
 

@@ -7,3 +7,4 @@ Reference
 
    bibliography.rst
    changelog.rst
+   source.rst

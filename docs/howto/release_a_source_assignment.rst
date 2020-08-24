@@ -39,7 +39,7 @@ Writing the assignment notebooks :code:`assignment.ipynb`::
 
 Note that the :code:`nbchkr.utils.remove_cells` function can take as arguments
 different regex patterns and replacement strings which allows flexibility for
-how to write your notebooks::
+how to write your notebooks.
 
 Writing a slightly different regex for solution delimiters::
 

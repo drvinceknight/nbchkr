@@ -4,3 +4,5 @@ Reference
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+
+   bibliography.rst

@@ -6,3 +6,4 @@ Explanation
    :caption: Contents:
 
    why.rst
+   why_autocheck.rst

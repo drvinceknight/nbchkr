@@ -10,6 +10,8 @@ How to:
    :maxdepth: 2
    :caption: Contents:
 
+   install.rst
    write_an_assignment.rst
    release_a_source_assignment.rst
    check_a_submission.rst
+   contribute.rst

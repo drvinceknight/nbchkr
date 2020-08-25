@@ -58,4 +58,4 @@ html_static_path = ["_static"]
 
 # Specify the master document.
 # See: https://github.com/readthedocs/readthedocs.org/issues/2569
-master_doc = 'index'
+master_doc = "index"

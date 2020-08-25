@@ -63,3 +63,9 @@ comprehensive course management solution and includes features such as:
 - Add ons to the jupyter notebook interface.
 
 `nbchkr` is meant to be a lightweight alternative.
+
+
+# Documentation
+
+Full documentation is available at:
+[nbchkr.readthedocs.io](nbchkr.readthedocs.io)

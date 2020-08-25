@@ -9,8 +9,12 @@ with open("requirements.txt") as f:
     for library in f.read().splitlines():
         requirements.append(library)
 
+# Read in the version number
+exec(open("src/nbchkr/version.py", "r").read())
+
 setup(
     name="nbchkr",
+    version=__version__,
     author="Vince Knight",
     author_email=("knightva@cardiff.ac.uk"),
     packages=find_packages("src"),

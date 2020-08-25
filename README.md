@@ -5,13 +5,14 @@ A lightweight solution to mark/grade/check notebook assignments.
 # How
 
 
-## Installation:
+## Installation
+
 
 ```bash
 $ pip install nbchkr
 ```
 
-## Preparation:
+## Preparation
 
 Write a jupyter notebook `main.ipynb`, using tags to denote specific cells:
 
@@ -22,7 +23,7 @@ Write a jupyter notebook `main.ipynb`, using tags to denote specific cells:
 
 See documentation for further examples and features.
 
-## Release:
+## Release
 
 Create a student version of the notebook:
 

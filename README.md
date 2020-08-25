@@ -6,7 +6,9 @@ A lightweight solution to mark/grade/check notebook assignments.
 
 ## Installation:
 
+```bash
 $ pip install nbchkr
+```
 
 ## Preparation:
 
@@ -23,13 +25,18 @@ See documentation for further examples and features.
 
 Create a student version of the notebook:
 
+```bash
 $ nbchkr release --source main.ipynb --output student.ipynb
+```
+
 
 ## Check
 
 Given a student notebook notebook: `submitted.ipynb`
 
+```bash
 $ nbchkr check --source main.ipynb --submitted submitted.ipynb --feedback_suffix -feedback.md --output data.csv
+```
 
 This writes to screen the score (total and for each question) and creates
 `feedback.md` as well as reporting the results to `data.csv`.
@@ -37,7 +44,9 @@ This writes to screen the score (total and for each question) and creates
 Given a pattern of student submissions it is possible to batch
 check all of them:
 
+```bash
 $ nbchkr check --source main.ipynb --submitted submissions/*.ipynb --feedback_suffix -feedback.md --output data.csv
+```
 
 # Why?
 

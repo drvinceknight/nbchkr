@@ -62,10 +62,6 @@ html_static_path = ["_static"]
 # See: https://github.com/readthedocs/readthedocs.org/issues/2569
 master_doc = "index"
 
-# The name for this set of Sphinx documents.  If None, it defaults to
-# "<project> v<release> documentation".
-html_title = None
-
 # The version
 version = nbchkr.__version__
 # The full version, including alpha/beta/rc tags.

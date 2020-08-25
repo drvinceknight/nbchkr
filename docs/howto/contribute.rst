@@ -52,4 +52,4 @@ Git branching
 The most up to date branch that all new features should be branched from is
 :code:`dev`.
 
-The latest release branch is :code:`release`.
+New releases are tagged.

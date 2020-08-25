@@ -14,7 +14,7 @@ exec(open("src/nbchkr/version.py", "r").read())
 
 setup(
     name="nbchkr",
-    version=__version__,
+    version=__version__,   # NOQA
     author="Vince Knight",
     author_email=("knightva@cardiff.ac.uk"),
     packages=find_packages("src"),

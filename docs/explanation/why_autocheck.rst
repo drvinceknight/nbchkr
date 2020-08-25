@@ -2,7 +2,7 @@ why use automated checking?
 ===========================
 
 In the discussion of [Schinke2014]_ (a review of assessment) the following
-sentence stands out::
+sentence stands out:
 
     "However, underlying the less encouraging news about grades are numerous
     opportunities for faculty members to make assessment and evaluation more
@@ -69,7 +69,7 @@ is in the :ref:`tutorial` where a test is included to make sure that the code
 written is documented.
 
 There are of course some negative aspects to automated testing another good
-quote from [Schinke2014]_ is::
+quote from [Schinke2014]_ is:
 
     "In fact, we have presented evidence that accuracy-based grading may, in
     fact demotivate students and impede learning."

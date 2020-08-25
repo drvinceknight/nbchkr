@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3999365.svg)](https://doi.org/10.5281/zenodo.3999365)
+
 # nbchkr: Notebook checker
 
 A lightweight solution to mark/grade/check notebook assignments.

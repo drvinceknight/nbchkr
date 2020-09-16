@@ -10,16 +10,15 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-import os
-
 import mock
+import os
+import sys
 
 MOCK_MODULES = [
     "jupyter",
     "typer",
 ]
 
-import sys
 
 for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = mock.Mock()

@@ -146,6 +146,11 @@ def test_check_on_a_single_notebook():
 
 
 def test_check_on_a_collection_of_notebooks():
+    """
+    Check that check can be run on a pattern of notebooks.
+
+    Note that this also uses the default values for the outputs.
+    """
     # TODO Add better tear down.
     output = subprocess.run(
         [
@@ -155,10 +160,6 @@ def test_check_on_a_collection_of_notebooks():
             f"{NB_PATH}/test.ipynb",
             "--submitted",
             f"{NB_PATH}/*.ipynb",
-            "--feedback-suffix",
-            "_feedback.md",
-            "--output",
-            "output.csv",
         ],
         capture_output=True,
     )

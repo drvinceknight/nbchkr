@@ -1,6 +1,8 @@
 Welcome to nbchkr's documentation!
 ==================================
 
+A lightweight solution to mark/grade/check notebook assignments.
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:

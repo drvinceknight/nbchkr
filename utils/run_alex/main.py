@@ -15,6 +15,7 @@ max_exit_code = 0
 rst_file_paths = root.glob("**/*.rst")
 md_file_paths = root.glob("**/*.md")
 documentation_file_paths = itertools.chain(rst_file_paths, md_file_paths)
+
 for file_path in documentation_file_paths:
     output = subprocess.run(
         ["alex", file_path], capture_output=True, check=False

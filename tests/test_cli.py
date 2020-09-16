@@ -58,10 +58,10 @@ Options:
                           [required]
 
   --feedback-suffix TEXT  The suffix to add to the file name for the feedback
-                          [required]
+                          [default: _feedback.md]
 
   --output PATH           The path to output comma separated value file
-                          [required]
+                          [default: output.csv]
 
   --help                  Show this message and exit.
 """

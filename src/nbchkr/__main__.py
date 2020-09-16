@@ -35,10 +35,10 @@ def check(
         ..., help="The path pattern to the submitted ipynb file(s)"
     ),
     feedback_suffix: str = typer.Option(
-        ..., help="The suffix to add to the file name for the feedback"
+        "_feedback.md", help="The suffix to add to the file name for the feedback"
     ),
     output: pathlib.Path = typer.Option(
-        ..., help="The path to output comma separated value file"
+        "output.csv", help="The path to output comma separated value file"
     ),
 ):
     """

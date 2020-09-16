@@ -208,7 +208,7 @@ def test_check_on_documentation_examples():
             "--submitted",
             f"{docs_path}/submissions/*.ipynb",
             "--feedback-suffix",
-            "_feedback.testmd",
+            "-feedback.testmd",
             "--output",
             "data.csv",
         ],
@@ -230,7 +230,7 @@ def test_check_on_documentation_examples():
     submissions_directory = pathlib.Path(f"{docs_path}/submissions/")
     number_of_feedback_files = 0
 
-    for feedback_path in submissions_directory.glob("*.ipynb_feedback.testmd"):
+    for feedback_path in submissions_directory.glob("*.ipynb-feedback.testmd"):
         number_of_feedback_files += 1
         expected_feedback_path = pathlib.Path(
             f"{docs_path}/submissions/{feedback_path.stem}.md"

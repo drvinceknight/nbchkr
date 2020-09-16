@@ -58,7 +58,7 @@ Options:
                           [required]
 
   --feedback-suffix TEXT  The suffix to add to the file name for the feedback
-                          [default: _feedback.md]
+                          [default: -feedback.md]
 
   --output PATH           The path to output comma separated value file
                           [default: output.csv]
@@ -164,16 +164,16 @@ def test_check_on_a_collection_of_notebooks():
         capture_output=True,
     )
     expected_stdout = str.encode(
-        f"{NB_PATH}/submission.ipynb checked against {NB_PATH}/test.ipynb. Feedback written to {NB_PATH}/submission.ipynb_feedback.md and output written to output.csv.\n"
+        f"{NB_PATH}/submission.ipynb checked against {NB_PATH}/test.ipynb. Feedback written to {NB_PATH}/submission.ipynb-feedback.md and output written to output.csv.\n"
     )
     expected_stdout += str.encode(
-        f"{NB_PATH}/submission_with_missing_tags.ipynb checked against {NB_PATH}/test.ipynb. Feedback written to {NB_PATH}/submission_with_missing_tags.ipynb_feedback.md and output written to output.csv.\n"
+        f"{NB_PATH}/submission_with_missing_tags.ipynb checked against {NB_PATH}/test.ipynb. Feedback written to {NB_PATH}/submission_with_missing_tags.ipynb-feedback.md and output written to output.csv.\n"
     )
     expected_stdout += str.encode(
         f"WARNING: {NB_PATH}/submission_with_missing_tags.ipynb has tags that do not match the source.\n"
     )
     expected_stdout += str.encode(
-        f"{NB_PATH}/test.ipynb checked against {NB_PATH}/test.ipynb. Feedback written to {NB_PATH}/test.ipynb_feedback.md and output written to output.csv.\n"
+        f"{NB_PATH}/test.ipynb checked against {NB_PATH}/test.ipynb. Feedback written to {NB_PATH}/test.ipynb-feedback.md and output written to output.csv.\n"
     )
     # assert output.stderr == b''  # TODO Fix the warning error
     assert output.stdout == expected_stdout

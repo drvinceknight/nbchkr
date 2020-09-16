@@ -68,6 +68,7 @@ Options:
     assert output.stdout == expected_stdout
     assert output.stderr == b""
 
+
 def test_release():
     # TODO Add better tear down.
     output = subprocess.run(

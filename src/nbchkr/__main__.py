@@ -10,8 +10,12 @@ app = typer.Typer()
 
 
 @app.command()
-def release(source: pathlib.Path = typer.Option(..., help="The path to the source ipynb file"), 
-            output: pathlib.Path = typer.Option(..., help="The path to the destination ipynb file")):
+def release(
+    source: pathlib.Path = typer.Option(..., help="The path to the source ipynb file"),
+    output: pathlib.Path = typer.Option(
+        ..., help="The path to the destination ipynb file"
+    ),
+):
     """
     This releases a piece of coursework by removing the solutions from a source.
     """
@@ -25,11 +29,18 @@ def release(source: pathlib.Path = typer.Option(..., help="The path to the sourc
 
 
 @app.command()
-def check(source: pathlib.Path = typer.Option(..., help="The path to the source ipynb file"),
-          submitted: str = typer.Option(..., help="The path pattern to the submitted ipynb file(s)"),
-          feedback_suffix: str = typer.Option(..., help="The suffix to add to the file name for the feedback"), 
-          output: pathlib.Path = typer.Option(..., help="The path to output comma separated value file"),
-          ):
+def check(
+    source: pathlib.Path = typer.Option(..., help="The path to the source ipynb file"),
+    submitted: str = typer.Option(
+        ..., help="The path pattern to the submitted ipynb file(s)"
+    ),
+    feedback_suffix: str = typer.Option(
+        ..., help="The suffix to add to the file name for the feedback"
+    ),
+    output: pathlib.Path = typer.Option(
+        ..., help="The path to output comma separated value file"
+    ),
+):
     """
     This checks a given submission against a source.
     """
@@ -64,6 +75,7 @@ def check(source: pathlib.Path = typer.Option(..., help="The path to the source 
                     typer.echo(
                         f"WARNING: {path} has tags that do not match the source."
                     )
+
 
 if __name__ == "__main__":
     app()

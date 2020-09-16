@@ -1,4 +1,4 @@
-name: CI
+name: Check correctness and style of code
 
 on: [push, pull_request]
 

@@ -2,7 +2,7 @@ import collections
 import json
 import pathlib
 import re
-from typing import Tuple
+from typing import Tuple, Union
 
 import nbformat  # type: ignore
 from nbconvert.preprocessors import ExecutePreprocessor  # type: ignore
@@ -20,7 +20,7 @@ ANSWER_TAG_REGEX = r"answer:*"
 SCORE_REGEX = re.compile(r"score:(\d+)")
 
 
-def read(nb_path: pathlib.Path, as_version: int = 4) -> dict:
+def read(nb_path: Union[pathlib.Path, str], as_version: int = 4) -> dict:
     """
     Read a jupyter notebook file at `nb_path`.
 

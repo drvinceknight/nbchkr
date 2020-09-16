@@ -203,7 +203,10 @@ def check(
 
 
 def check_tags_match(
-    source_nb_node: dict, nb_node: dict, tag_seperator: str = "|", tag_regex=None,
+    source_nb_node: dict,
+    nb_node: dict,
+    tag_seperator: str = "|",
+    tag_regex=None,
 ) -> bool:
     """
     This checks if the count of tags that match `tag_regex` on each cell matches. Note that it does not

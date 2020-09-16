@@ -1,9 +1,8 @@
 """
 Test that the version number exists and is valid.
 """
-import packaging
-
 import nbchkr
+import packaging
 
 
 def test_version_is_str():

@@ -1,11 +1,11 @@
 """
 Tests for the command line tool.
 """
-import subprocess
-import pathlib
-import nbchkr
 import csv
+import pathlib
+import subprocess
 
+import nbchkr
 from test_release import NB_PATH
 
 

@@ -1,7 +1,7 @@
+import itertools
 import pathlib
 import sys
 
-import itertools
 import proselint
 
 

@@ -7,9 +7,7 @@ Tests for the check functionality
 
 """
 import nbchkr.utils
-
 import nbformat
-
 from test_release import NB_PATH
 
 

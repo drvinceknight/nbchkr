@@ -6,10 +6,10 @@ Tests for the release functionality:
     - Write nb
 
 """
-import nbchkr.utils
-
-import nbformat
 import pathlib
+
+import nbchkr.utils
+import nbformat
 
 
 def get_absolute_path_of_test_directory():

@@ -1,8 +1,7 @@
+import itertools
 import pathlib
 import subprocess
 import sys
-
-import itertools
 
 
 def get_root_path():

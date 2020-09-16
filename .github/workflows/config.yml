@@ -48,6 +48,7 @@ jobs:
       run: |
         python setup.py develop
         python -m pytest -v --cov=nbchkr --cov-fail-under=100 --flake8 --doctest-glob='*.rst'
+        python -m coverage report -m
     - name: Install interrogate
       run: |
         python -m pip install interrogate

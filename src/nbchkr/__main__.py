@@ -76,6 +76,5 @@ def check(
                         f"WARNING: {path} has tags that do not match the source."
                     )
 
-
 if __name__ == "__main__":  # pragma: no cover
     app()

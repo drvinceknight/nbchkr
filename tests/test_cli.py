@@ -68,7 +68,10 @@ Options:
     assert output.stdout == expected_stdout
     assert output.stderr == b""
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Use typer for the cli
 def test_release():
     # TODO Add better tear down.
     output = subprocess.run(
@@ -160,6 +163,13 @@ def test_check_on_a_collection_of_notebooks():
             f"{NB_PATH}/test.ipynb",
             "--submitted",
             f"{NB_PATH}/*.ipynb",
+<<<<<<< HEAD
+=======
+            "--feedback-suffix",
+            "_feedback.md",
+            "--output",
+            "output.csv",
+>>>>>>> Use typer for the cli
         ],
         capture_output=True,
     )

@@ -4,6 +4,7 @@ import sys
 
 import itertools
 
+
 def get_root_path():
     return pathlib.Path(__file__).absolute().parent.parent.parent
 
@@ -17,9 +18,7 @@ md_file_paths = root.glob("**/*.md")
 documentation_file_paths = itertools.chain(rst_file_paths, md_file_paths)
 
 for file_path in documentation_file_paths:
-    output = subprocess.run(
-        ["alex", file_path], capture_output=True, check=False
-    )
+    output = subprocess.run(["alex", file_path], capture_output=True, check=False)
 
     if (exit_code := output.returncode) > 0:
         max_exit_code = max(max_exit_code, exit_code)

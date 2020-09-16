@@ -1,4 +1,4 @@
-name: Test prose and style of docs
+name: Check prose and style of docs
 
 on: [push, pull_request]
 

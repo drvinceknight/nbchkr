@@ -5,6 +5,9 @@ import sys
 
 
 def get_root_path():
+    """
+    Obtain the path of the root of the directory
+    """
     return pathlib.Path(__file__).absolute().parent.parent.parent
 
 

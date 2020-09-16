@@ -210,7 +210,7 @@ These notebooks are all put in a :code:`submissions/` directory:
 To check them and generate the feedback we again use the :code:`nbchkr` command
 line tool::
 
-    $ nbchkr check --source main.ipynb --submitted "submissions/*.ipynb" --feedback_suffix -feedback.md --output data.csv
+    $ nbchkr check --source main.ipynb --submitted "submissions/*.ipynb" --feedback-suffix -feedback.md --output data.csv
 
 This has gone through and checked each notebook, you can see the output here:
 

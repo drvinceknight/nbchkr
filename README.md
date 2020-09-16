@@ -39,7 +39,7 @@ $ nbchkr release --source main.ipynb --output student.ipynb
 Given a student notebook notebook: `submitted.ipynb`
 
 ```bash
-$ nbchkr check --source main.ipynb --submitted submitted.ipynb --feedback_suffix -feedback.md --output data.csv
+$ nbchkr check --source main.ipynb --submitted submitted.ipynb --feedback-suffix -feedback.md --output data.csv
 ```
 
 This writes to screen the score (total and for each question) and creates
@@ -49,7 +49,7 @@ Given a pattern of student submissions it is possible to batch
 check all of them:
 
 ```bash
-$ nbchkr check --source main.ipynb --submitted submissions/*.ipynb --feedback_suffix -feedback.md --output data.csv
+$ nbchkr check --source main.ipynb --submitted submissions/*.ipynb --feedback-suffix -feedback.md --output data.csv
 ```
 
 # Why?

@@ -13,14 +13,57 @@ def test_help_call():
     output = subprocess.run(["nbchkr", "--help"], capture_output=True)
     expected_stdout = b"""Usage: nbchkr [OPTIONS] COMMAND [ARGS]...
 
-  Create and check notebook assignments.
-
 Options:
-  --help  Show this message and exit.
+  --install-completion [bash|zsh|fish|powershell|pwsh]
+                                  Install completion for the specified shell.
+  --show-completion [bash|zsh|fish|powershell|pwsh]
+                                  Show completion for the specified shell, to
+                                  copy it or customize the installation.
+
+  --help                          Show this message and exit.
 
 Commands:
   check    This checks a given submission against a source.
   release  This releases a piece of coursework by removing the solutions...
+"""
+    assert output.stdout == expected_stdout
+    assert output.stderr == b""
+
+
+def test_release_help_call():
+    output = subprocess.run(["nbchkr", "release", "--help"], capture_output=True)
+    expected_stdout = b"""Usage: nbchkr release [OPTIONS]
+
+  This releases a piece of coursework by removing the solutions from a
+  source.
+
+Options:
+  --source PATH  The path to the source ipynb file  [required]
+  --output PATH  The path to the destination ipynb file  [required]
+  --help         Show this message and exit.
+"""
+    assert output.stdout == expected_stdout
+    assert output.stderr == b""
+
+
+def test_check_help_call():
+    output = subprocess.run(["nbchkr", "check", "--help"], capture_output=True)
+    expected_stdout = b"""Usage: nbchkr check [OPTIONS]
+
+  This checks a given submission against a source.
+
+Options:
+  --source PATH           The path to the source ipynb file  [required]
+  --submitted TEXT        The path pattern to the submitted ipynb file(s)
+                          [required]
+
+  --feedback-suffix TEXT  The suffix to add to the file name for the feedback
+                          [default: -feedback.md]
+
+  --output PATH           The path to output comma separated value file
+                          [default: output.csv]
+
+  --help                  Show this message and exit.
 """
     assert output.stdout == expected_stdout
     assert output.stderr == b""
@@ -75,7 +118,7 @@ def test_check_on_a_single_notebook():
                 f"{NB_PATH}/test.ipynb",
                 "--submitted",
                 f"{NB_PATH}/{submission_nb}",
-                "--feedback_suffix",
+                "--feedback-suffix",
                 "_feedback.md",
                 "--output",
                 "output.csv",
@@ -103,6 +146,11 @@ def test_check_on_a_single_notebook():
 
 
 def test_check_on_a_collection_of_notebooks():
+    """
+    Check that check can be run on a pattern of notebooks.
+
+    Note that this also uses the default values for the outputs.
+    """
     # TODO Add better tear down.
     output = subprocess.run(
         [
@@ -112,24 +160,20 @@ def test_check_on_a_collection_of_notebooks():
             f"{NB_PATH}/test.ipynb",
             "--submitted",
             f"{NB_PATH}/*.ipynb",
-            "--feedback_suffix",
-            "_feedback.md",
-            "--output",
-            "output.csv",
         ],
         capture_output=True,
     )
     expected_stdout = str.encode(
-        f"{NB_PATH}/submission.ipynb checked against {NB_PATH}/test.ipynb. Feedback written to {NB_PATH}/submission.ipynb_feedback.md and output written to output.csv.\n"
+        f"{NB_PATH}/submission.ipynb checked against {NB_PATH}/test.ipynb. Feedback written to {NB_PATH}/submission.ipynb-feedback.md and output written to output.csv.\n"
     )
     expected_stdout += str.encode(
-        f"{NB_PATH}/submission_with_missing_tags.ipynb checked against {NB_PATH}/test.ipynb. Feedback written to {NB_PATH}/submission_with_missing_tags.ipynb_feedback.md and output written to output.csv.\n"
+        f"{NB_PATH}/submission_with_missing_tags.ipynb checked against {NB_PATH}/test.ipynb. Feedback written to {NB_PATH}/submission_with_missing_tags.ipynb-feedback.md and output written to output.csv.\n"
     )
     expected_stdout += str.encode(
         f"WARNING: {NB_PATH}/submission_with_missing_tags.ipynb has tags that do not match the source.\n"
     )
     expected_stdout += str.encode(
-        f"{NB_PATH}/test.ipynb checked against {NB_PATH}/test.ipynb. Feedback written to {NB_PATH}/test.ipynb_feedback.md and output written to output.csv.\n"
+        f"{NB_PATH}/test.ipynb checked against {NB_PATH}/test.ipynb. Feedback written to {NB_PATH}/test.ipynb-feedback.md and output written to output.csv.\n"
     )
     # assert output.stderr == b''  # TODO Fix the warning error
     assert output.stdout == expected_stdout
@@ -147,7 +191,7 @@ def test_check_on_a_collection_of_notebooks():
     assert output == expected_output
 
 
-def test_check_on_documentation_exampless():
+def test_check_on_documentation_examples():
     """
     Note that this also serves as a test of the tutorial commands: if there is a
     regression that causes these tests to fail the documentation might need to
@@ -163,8 +207,8 @@ def test_check_on_documentation_exampless():
             f"{docs_path}/main.ipynb",
             "--submitted",
             f"{docs_path}/submissions/*.ipynb",
-            "--feedback_suffix",
-            "_feedback.testmd",
+            "--feedback-suffix",
+            "-feedback.testmd",
             "--output",
             "data.csv",
         ],
@@ -186,7 +230,7 @@ def test_check_on_documentation_exampless():
     submissions_directory = pathlib.Path(f"{docs_path}/submissions/")
     number_of_feedback_files = 0
 
-    for feedback_path in submissions_directory.glob("*.ipynb_feedback.testmd"):
+    for feedback_path in submissions_directory.glob("*.ipynb-feedback.testmd"):
         number_of_feedback_files += 1
         expected_feedback_path = pathlib.Path(
             f"{docs_path}/submissions/{feedback_path.stem}.md"

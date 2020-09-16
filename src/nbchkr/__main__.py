@@ -2,21 +2,16 @@ import csv
 import glob
 import pathlib
 
-import click
+import typer
 
 import nbchkr.utils
 
-
-@click.group()
-def main():
-    """Create and check notebook assignments."""
-    pass
+app = typer.Typer()
 
 
-@main.command()
-@click.option("--source", help="The path to the source ipynb file")
-@click.option("--output", help="The path to the destination ipynb file")
-def release(source, output):
+@app.command()
+def release(source: pathlib.Path = typer.Option(..., help="The path to the source ipynb file"), 
+            output: pathlib.Path = typer.Option(..., help="The path to the destination ipynb file")):
     """
     This releases a piece of coursework by removing the solutions from a source.
     """
@@ -26,17 +21,15 @@ def release(source, output):
 
     output_path = pathlib.Path(output)
     nbchkr.utils.write(output_path=output_path, nb_node=nb_node)
-    click.echo(f"Solutions removed from {source}. New notebook written to {output}.")
+    typer.echo(f"Solutions removed from {source}. New notebook written to {output}.")
 
 
-@main.command()
-@click.option("--source", help="The path to the source ipynb file")
-@click.option("--submitted", help="The path pattern to the submitted ipynb file(s)")
-@click.option(
-    "--feedback_suffix", help="The suffix to add to the file name for the feedback"
-)
-@click.option("--output", help="The path to output comma separated value file")
-def check(source, submitted, feedback_suffix, output):
+@app.command()
+def check(source: pathlib.Path = typer.Option(..., help="The path to the source ipynb file"),
+          submitted: str = typer.Option(..., help="The path pattern to the submitted ipynb file(s)"),
+          feedback_suffix: str = typer.Option(..., help="The suffix to add to the file name for the feedback"), 
+          output: pathlib.Path = typer.Option(..., help="The path to output comma separated value file"),
+          ):
     """
     This checks a given submission against a source.
     """
@@ -48,7 +41,7 @@ def check(source, submitted, feedback_suffix, output):
             ["Submission filepath", "Score", "Maximum score", "Tags match"]
         )
 
-        with click.progressbar(sorted(glob.iglob(submitted))) as bar:
+        with typer.progressbar(sorted(glob.iglob(submitted))) as bar:
             for path in bar:
                 nb_node = nbchkr.utils.read(path)
                 tags_match = nbchkr.utils.check_tags_match(
@@ -64,10 +57,13 @@ def check(source, submitted, feedback_suffix, output):
                     f.write(feedback_md)
 
                 csv_writer.writerow([path, score, maximum_score, tags_match])
-                click.echo(
+                typer.echo(
                     f"{path} checked against {source}. Feedback written to {path}{feedback_suffix} and output written to {output}."
                 )
                 if tags_match is False:
-                    click.echo(
+                    typer.echo(
                         f"WARNING: {path} has tags that do not match the source."
                     )
+
+if __name__ == "__main__":
+    app()

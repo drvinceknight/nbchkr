@@ -13,10 +13,14 @@ def test_help_call():
     output = subprocess.run(["nbchkr", "--help"], capture_output=True)
     expected_stdout = b"""Usage: nbchkr [OPTIONS] COMMAND [ARGS]...
 
-  Create and check notebook assignments.
-
 Options:
-  --help  Show this message and exit.
+  --install-completion [bash|zsh|fish|powershell|pwsh]
+                                  Install completion for the specified shell.
+  --show-completion [bash|zsh|fish|powershell|pwsh]
+                                  Show completion for the specified shell, to
+                                  copy it or customize the installation.
+
+  --help                          Show this message and exit.
 
 Commands:
   check    This checks a given submission against a source.
@@ -25,6 +29,44 @@ Commands:
     assert output.stdout == expected_stdout
     assert output.stderr == b""
 
+
+def test_release_help_call():
+    output = subprocess.run(["nbchkr", "release", "--help"], capture_output=True)
+    expected_stdout = b"""Usage: nbchkr release [OPTIONS]
+
+  This releases a piece of coursework by removing the solutions from a
+  source.
+
+Options:
+  --source PATH  The path to the source ipynb file  [required]
+  --output PATH  The path to the destination ipynb file  [required]
+  --help         Show this message and exit.
+"""
+    assert output.stdout == expected_stdout
+    assert output.stderr == b""
+
+
+def test_check_help_call():
+    output = subprocess.run(["nbchkr", "check", "--help"], capture_output=True)
+    expected_stdout = b"""Usage: nbchkr check [OPTIONS]
+
+  This checks a given submission against a source.
+
+Options:
+  --source PATH           The path to the source ipynb file  [required]
+  --submitted TEXT        The path pattern to the submitted ipynb file(s)
+                          [required]
+
+  --feedback-suffix TEXT  The suffix to add to the file name for the feedback
+                          [required]
+
+  --output PATH           The path to output comma separated value file
+                          [required]
+
+  --help                  Show this message and exit.
+"""
+    assert output.stdout == expected_stdout
+    assert output.stderr == b""
 
 def test_release():
     # TODO Add better tear down.
@@ -75,7 +117,7 @@ def test_check_on_a_single_notebook():
                 f"{NB_PATH}/test.ipynb",
                 "--submitted",
                 f"{NB_PATH}/{submission_nb}",
-                "--feedback_suffix",
+                "--feedback-suffix",
                 "_feedback.md",
                 "--output",
                 "output.csv",
@@ -112,7 +154,7 @@ def test_check_on_a_collection_of_notebooks():
             f"{NB_PATH}/test.ipynb",
             "--submitted",
             f"{NB_PATH}/*.ipynb",
-            "--feedback_suffix",
+            "--feedback-suffix",
             "_feedback.md",
             "--output",
             "output.csv",

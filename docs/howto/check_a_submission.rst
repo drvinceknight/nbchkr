@@ -12,7 +12,7 @@ Using the command line tool
 Given a source assignment :code:`main.ipynb` and a submission
 :code:`submitted.ipynb` you can check the submission using::
 
-    $ nbchkr check --source main.ipynb --submitted submitted.ipynb --feedback_suffix -feedback.md --output data.csv
+    $ nbchkr check --source main.ipynb --submitted submitted.ipynb --feedback-suffix -feedback.md --output data.csv
 
 This creates :code:`submitted.ipynb-feedback.md` with feedback and outputs
 summary scores to :code:`data.csv`.
@@ -20,7 +20,7 @@ summary scores to :code:`data.csv`.
 Note that given a pattern matching a number of notebooks, for example all
 notebooks in :code:`submissions/` you can check them all at once using::
 
-    $ nbchkr check --source main.ipynb --submitted "submissions/*.ipynb" --feedback_suffix -feedback.md --output data.csv
+    $ nbchkr check --source main.ipynb --submitted "submissions/*.ipynb" --feedback-suffix -feedback.md --output data.csv
 
 Using :code:`nbchkr` as a library
 ---------------------------------

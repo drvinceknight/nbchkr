@@ -2,8 +2,9 @@ import csv
 import glob
 import pathlib
 
-import nbchkr.utils
 import typer
+
+import nbchkr.utils
 
 app = typer.Typer()
 

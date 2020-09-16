@@ -190,7 +190,7 @@ def test_check_on_a_collection_of_notebooks():
     assert output == expected_output
 
 
-def test_check_on_documentation_exampless():
+def test_check_on_documentation_examples():
     """
     Note that this also serves as a test of the tutorial commands: if there is a
     regression that causes these tests to fail the documentation might need to
@@ -206,7 +206,7 @@ def test_check_on_documentation_exampless():
             f"{docs_path}/main.ipynb",
             "--submitted",
             f"{docs_path}/submissions/*.ipynb",
-            "--feedback_suffix",
+            "--feedback-suffix",
             "_feedback.testmd",
             "--output",
             "data.csv",

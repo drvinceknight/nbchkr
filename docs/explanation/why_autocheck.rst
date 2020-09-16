@@ -68,7 +68,7 @@ code quality itself (all within the testing framework). One such example of this
 is in the :ref:`tutorial` where a test is included to make sure that the code
 written is documented.
 
-There are of course some negative aspects to automated testing another good
+There are some negative aspects to automated testing another good
 quote from [Schinke2014]_ is:
 
     "In fact, we have presented evidence that accuracy-based grading may, in

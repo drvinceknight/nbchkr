@@ -60,7 +60,7 @@ comprehensive course management solution and includes features such as:
 
 - An email server to be able to communicate with students;
 - The ability to release assignments, feedback and marks directly;
-- Add ons to the jupyter notebook interface.
+- Addons to the jupyter notebook interface.
 
 `nbchkr` is meant to be a lightweight alternative.
 

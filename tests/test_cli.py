@@ -24,7 +24,10 @@ Options:
 
 Commands:
   check    This checks a given submission against a source.
-  release  This releases a piece of coursework by removing the solutions...
+  release  This releases a piece of coursework by removing the solutions
+           and...
+
+  solve    This solves a piece of coursework by removing the checks from a...
 """
     assert output.stdout == expected_stdout
     assert output.stderr == b""
@@ -34,8 +37,23 @@ def test_release_help_call():
     output = subprocess.run(["nbchkr", "release", "--help"], capture_output=True)
     expected_stdout = b"""Usage: nbchkr release [OPTIONS]
 
-  This releases a piece of coursework by removing the solutions from a
-  source.
+  This releases a piece of coursework by removing the solutions and checks
+  from a source.
+
+Options:
+  --source PATH  The path to the source ipynb file  [required]
+  --output PATH  The path to the destination ipynb file  [required]
+  --help         Show this message and exit.
+"""
+    assert output.stdout == expected_stdout
+    assert output.stderr == b""
+
+
+def test_solve_help_call():
+    output = subprocess.run(["nbchkr", "solve", "--help"], capture_output=True)
+    expected_stdout = b"""Usage: nbchkr solve [OPTIONS]
+
+  This solves a piece of coursework by removing the checks from a source.
 
 Options:
   --source PATH  The path to the source ipynb file  [required]
@@ -83,7 +101,7 @@ def test_release():
         capture_output=True,
     )
     expected_stdout = str.encode(
-        f"Solutions removed from {NB_PATH}/test.ipynb. New notebook written to student.ipynb.\n"
+        f"Solutions and checks removed from {NB_PATH}/test.ipynb. New notebook written to student.ipynb.\n"
     )
     assert output.stderr == b""
     assert output.stdout == expected_stdout
@@ -95,6 +113,39 @@ def test_release():
     # TODO Add a better pytest cleanup.
     try:
         pathlib.Path("student.ipynb").unlink()
+    except FileNotFoundError:  # TODO Ensure py3.8 is used so that can pass
+        # `missing_ok=True` to `path.unlink`.
+        pass
+
+
+def test_solve():
+    # TODO Add better tear down.
+    output = subprocess.run(
+        [
+            "nbchkr",
+            "solve",
+            "--source",
+            f"{NB_PATH}/test.ipynb",
+            "--output",
+            "solution.ipynb",
+        ],
+        capture_output=True,
+    )
+    expected_stdout = str.encode(
+        f"Checks removed from {NB_PATH}/test.ipynb. New notebook written to solution.ipynb.\n"
+    )
+    assert output.stderr == b""
+    assert output.stdout == expected_stdout
+
+    student_nb = nbchkr.utils.read(nb_path="solution.ipynb")
+    expected_length = 4
+    assert type(student_nb["cells"]) is list
+    assert len(student_nb["cells"]) == expected_length
+    assert "assert" not in str(student_nb)
+    assert "sum(i for i in range(11))" in str(student_nb)
+    # TODO Add a better pytest cleanup.
+    try:
+        pathlib.Path("solution.ipynb").unlink()
     except FileNotFoundError:  # TODO Ensure py3.8 is used so that can pass
         # `missing_ok=True` to `path.unlink`.
         pass

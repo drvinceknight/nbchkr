@@ -33,8 +33,8 @@ stay in place)::
 
     >>> nb_path = pathlib.Path("main.ipynb")
     >>> solution_regex = re.compile('$^')
-    >>> nb_node = nbchkr.utils.read(nb_path=nb_path, solution_regex=solution_regex)
-    >>> student_nb = nbchkr.utils.remove_cells(nb_node=nb_node)
+    >>> nb_node = nbchkr.utils.read(nb_path=nb_path)
+    >>> student_nb = nbchkr.utils.remove_cells(nb_node=nb_node, solution_regex=solution_regex)
 
 Writing the assignment notebooks :code:`assignment.ipynb`::
 

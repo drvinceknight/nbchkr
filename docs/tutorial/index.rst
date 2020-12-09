@@ -193,6 +193,17 @@ to students. To do this, we use the command line tool that comes with :code:`nbc
 This creates :download:`assignment.ipynb <./assignment/assignment.ipynb>` with
 the answers and checks removed.
 
+Releasing solutions
+-------------------
+
+If we want to create a model solution we can.
+To do this, we use the command line tool that comes with :code:`nbchkr`::
+
+    $ nbchkr solve --source main.ipynb --output solution.ipynb
+
+This creates :download:`solution.ipynb <./assignment/solution.ipynb>` with
+the checks removed.
+
 Checking student assignments and generating feedback
 ----------------------------------------------------
 

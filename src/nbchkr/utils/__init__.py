@@ -18,6 +18,7 @@ SOLUTION_REPL = """### BEGIN SOLUTION
 UNIVERSAL_REGEX = re.compile(r".", re.DOTALL)
 ANSWER_TAG_REGEX = r"answer:*"
 SCORE_REGEX = re.compile(r"score:(\d+)")
+DESCRIPTION_REGEX = re.compile(r"description:(.*)")
 
 
 def read(nb_path: Union[pathlib.Path, str], as_version: int = 4) -> dict:
@@ -142,6 +143,24 @@ def get_score(cell: dict, score_regex_pattern=None) -> int:
         except AttributeError:
             return 0
     return 0
+
+
+def get_description(cell: dict, description_regex_pattern=None, tag_seperator: str = "|") -> int:
+    """
+    Given a `cell` of a notebook, return the description as defined by the
+    `description_regex_pattern`.
+    """
+    if description_regex_pattern is None:
+        description_regex_pattern = DESCRIPTION_REGEX
+    tags = get_tags(cell, tag_seperator=tag_seperator)
+    if tags != "":
+        for tag in tags.split(tag_seperator):
+            search = re.search(pattern=description_regex_pattern, string=tag)
+            try:
+                return search.group(1).replace("-", " ").capitalize()
+            except AttributeError:
+                pass
+    return ""
 
 
 def check(

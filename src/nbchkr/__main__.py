@@ -26,7 +26,9 @@ def release(
 
     output_path = pathlib.Path(output)
     nbchkr.utils.write(output_path=output_path, nb_node=nb_node)
-    typer.echo(f"Solutions and checks removed from {source}. New notebook written to {output}.")
+    typer.echo(
+        f"Solutions and checks removed from {source}. New notebook written to {output}."
+    )
 
 
 @app.command()
@@ -39,7 +41,7 @@ def solve(
     """
     This solves a piece of coursework by removing the checks from a source.
     """
-    solution_regex = re.compile('$^')  # Matches nothing
+    solution_regex = re.compile("$^")  # Matches nothing
     nb_path = pathlib.Path(source)
     nb_node = nbchkr.utils.read(nb_path=nb_path)
     nbchkr.utils.remove_cells(nb_node=nb_node, solution_regex=solution_regex)

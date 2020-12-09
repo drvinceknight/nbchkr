@@ -203,6 +203,13 @@ def check(
         # TODO Use the walrus operator here.
         if get_score(cell, score_regex_pattern=score_regex_pattern) > 0:
             score = get_score(cell)
+            description = get_description(cell)
+            if description != "":
+                feedback_md += f"""
+
+### {description}
+
+"""
             maximum_score += score
             try:
                 outputs = cell["outputs"][0]

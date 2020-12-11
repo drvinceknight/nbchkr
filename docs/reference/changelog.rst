@@ -1,6 +1,16 @@
 Changelog
 =========
 
+v0.0.5 - Update changelog
+-------------------------
+
+2020-12-11
+
+v0.0.4 - Add ability to have descriptions in feedback and create model solutions
+--------------------------------------------------------------------------------
+
+2020-12-11
+
 v0.0.3 - Minor internal changes and improvement to docs
 -------------------------------------------------------
 

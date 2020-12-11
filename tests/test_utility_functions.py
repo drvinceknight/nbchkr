@@ -38,8 +38,17 @@ def test_get_score():
 def test_get_description():
     cell = {"metadata": {"tags": ["score:40", "description:correct-answer", "mark_23"]}}
     assert nbchkr.utils.get_description(cell=cell) == "Correct answer"
-    assert nbchkr.utils.get_description(cell=cell, description_regex_pattern=r"mark\_(\d)") == "2"
-    assert nbchkr.utils.get_description(cell=cell, description_regex_pattern=r"mark\_(\d+)") == "23"
+    assert (
+        nbchkr.utils.get_description(cell=cell, description_regex_pattern=r"mark\_(\d)")
+        == "2"
+    )
+    assert (
+        nbchkr.utils.get_description(
+            cell=cell, description_regex_pattern=r"mark\_(\d+)"
+        )
+        == "23"
+    )
+
 
 def test_get_description_when_last_tag():
     cell = {"metadata": {"tags": ["score:40", "description:correct-answer"]}}

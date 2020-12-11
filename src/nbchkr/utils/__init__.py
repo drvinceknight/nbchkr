@@ -145,7 +145,9 @@ def get_score(cell: dict, score_regex_pattern=None) -> int:
     return 0
 
 
-def get_description(cell: dict, description_regex_pattern=None, tag_seperator: str = "|") -> int:
+def get_description(
+    cell: dict, description_regex_pattern=None, tag_seperator: str = "|"
+) -> int:
     """
     Given a `cell` of a notebook, return the description as defined by the
     `description_regex_pattern`.

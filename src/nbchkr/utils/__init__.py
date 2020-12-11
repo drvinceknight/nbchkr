@@ -147,7 +147,7 @@ def get_score(cell: dict, score_regex_pattern=None) -> int:
 
 def get_description(
     cell: dict, description_regex_pattern=None, tag_seperator: str = "|"
-) -> int:
+) -> str:
     """
     Given a `cell` of a notebook, return the description as defined by the
     `description_regex_pattern`.
@@ -159,7 +159,7 @@ def get_description(
         for tag in tags.split(tag_seperator):
             search = re.search(pattern=description_regex_pattern, string=tag)
             try:
-                return search.group(1).replace("-", " ").capitalize()
+                return search.group(1).replace("-", " ").capitalize()  # type: ignore
             except AttributeError:
                 pass
     return ""

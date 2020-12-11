@@ -49,13 +49,19 @@ def test_check_with_no_errors_for_original_source():
 
 ## answer:q1
 
+### Correct answer
+
 3 / 3
 
 ---
 
 ## answer:q2
 
+### Has docstring
+
 2 / 2
+
+### Correct answer for n up until 10
 
 5 / 5
 """
@@ -76,6 +82,8 @@ def test_check_with_no_errors_for_test_submission():
 
 ## answer:q1
 
+### Correct answer
+
 That is not the correct answer
 
 0 / 3
@@ -84,7 +92,11 @@ That is not the correct answer
 
 ## answer:q2
 
+### Has docstring
+
 2 / 2
+
+### Correct answer for n up until 10
 
 You function did not give the correct score for n=1
 
@@ -107,6 +119,8 @@ def test_check_with_no_errors_for_test_submission_with_missing_tags():
 
 ## answer:q1
 
+### Correct answer
+
 That is not the correct answer
 
 0 / 3
@@ -115,7 +129,11 @@ That is not the correct answer
 
 ## answer:q2
 
+### Has docstring
+
 2 / 2
+
+### Correct answer for n up until 10
 
 You function did not give the correct score for n=1
 

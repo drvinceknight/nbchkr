@@ -206,9 +206,7 @@ def check(
             description = get_description(cell)
             if description != "":
                 feedback_md += f"""
-
 ### {description}
-
 """
             maximum_score += score
             try:

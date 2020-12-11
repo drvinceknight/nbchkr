@@ -83,7 +83,7 @@ delimiters for what should not be shown to students::
 We can run that cell if we want to keep an eye on the answer.
 
 An important step at this stage is to let :code:`nbchkr` know that this is an
-answer cell, we do this by adding `answer:q1` to tags.
+answer cell, we do this by adding :code:`answer:q1` to tags.
 
 Everything should now look like the following:
 
@@ -108,6 +108,9 @@ by creating a new cell and writing::
     assert q1_answer == 1, feedback_text
 
 This will be worth 3 points so let us add the tag: :code:`score:3`.
+
+We can choose to add a description to our check which will then appear in the
+feedback. We do this by adding the tag: :code:`description:correct-answer`.
 
 Everything should now look like the following:
 
@@ -171,13 +174,15 @@ Whilst we've decided to write quite a lot of feedback with details about writing
 docstrings we are only going to score this part of the answer 1 point so we use
 the tag: `score:1`.
 
+We will add the description tag: :code:`description:presence-of-docstring`.
+
 We will also include specific checks for the actual answer::
 
     assert get_remainder(5, 3) == 2, "Incorrect answer for m=5, n=3: 5 mod 2 = 1 because 5 = 3 * 1 + 2"
     assert get_remainder(34, 21) == 13, "Incorrect answer for m=34, n=21: 34 mod 21 = 13 because 34 = 21 * 1 + 13"
     assert get_remainder(1000, 10) == 0, "Incorrect answer for m=1000, n=10: 1000 mod 10 = 0 because 1000 = 10 * 100 + 0"
 
-IF you would like to see a final version of this notebook you can find it here.
+For this we will use the description tag: :code:`description:correct-answer`.
 
 IF you would like to see a final version of this notebook
 you can find it :download:`here <./assignment/main.ipynb>`.

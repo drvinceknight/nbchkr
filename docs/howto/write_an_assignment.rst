@@ -42,6 +42,12 @@ Add the :code:`score:<integer>` tag to the cell. The :code:`<integer>` is the
 value associated with this specific check. If the :code:`<condition>` is met
 then the :code:`<integer>` value will be added to the total score of a student.
 
+Optionally, you can also add the :code:`description:<string>` tag to the cell.
+This will add the :code:`<string>` to the feedback for that specific check. Note
+that spaces should be replaced with :code:`-` which will automatically be
+replaced in the feedback. For example: :code:`description:correct-answer` will
+appear as :code:`### Correct answer` in the feedback.
+
 Note that it is possible to write multiple checks for a given answer. This can
 be done so as to programmatically offer varying levels of feedback for specific
 parts of the task.

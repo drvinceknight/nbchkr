@@ -5,11 +5,15 @@
 
 1 / 1
 
+### Correct answer
+
 3 / 3
 
 ---
 
 ## answer:q2
+
+### Presence of docstring
 
 You did not include a docstring. This is important to help document your code. 
 
@@ -32,5 +36,7 @@ ignored by Python so cannot be accessed in the same way.
 
 
 0 / 1
+
+### Correct answer
 
 6 / 6

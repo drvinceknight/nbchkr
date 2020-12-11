@@ -18,6 +18,7 @@ SOLUTION_REPL = """### BEGIN SOLUTION
 UNIVERSAL_REGEX = re.compile(r".", re.DOTALL)
 ANSWER_TAG_REGEX = r"answer:*"
 SCORE_REGEX = re.compile(r"score:(\d+)")
+DESCRIPTION_REGEX = re.compile(r"description:(.*)")
 
 
 def read(nb_path: Union[pathlib.Path, str], as_version: int = 4) -> dict:
@@ -144,6 +145,26 @@ def get_score(cell: dict, score_regex_pattern=None) -> int:
     return 0
 
 
+def get_description(
+    cell: dict, description_regex_pattern=None, tag_seperator: str = "|"
+) -> str:
+    """
+    Given a `cell` of a notebook, return the description as defined by the
+    `description_regex_pattern`.
+    """
+    if description_regex_pattern is None:
+        description_regex_pattern = DESCRIPTION_REGEX
+    tags = get_tags(cell, tag_seperator=tag_seperator)
+    if tags != "":
+        for tag in tags.split(tag_seperator):
+            search = re.search(pattern=description_regex_pattern, string=tag)
+            try:
+                return search.group(1).replace("-", " ").capitalize()  # type: ignore
+            except AttributeError:
+                pass
+    return ""
+
+
 def check(
     nb_node: dict,
     timeout: int = 600,
@@ -184,6 +205,11 @@ def check(
         # TODO Use the walrus operator here.
         if get_score(cell, score_regex_pattern=score_regex_pattern) > 0:
             score = get_score(cell)
+            description = get_description(cell)
+            if description != "":
+                feedback_md += f"""
+### {description}
+"""
             maximum_score += score
             try:
                 outputs = cell["outputs"][0]

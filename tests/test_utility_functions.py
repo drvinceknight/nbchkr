@@ -29,7 +29,27 @@ def test_get_empty_string_when_there_are_no_tags():
 
 
 def test_get_score():
-    cell = {"metadata": {"tags": ["score:40", "mark_23"]}}
+    cell = {"metadata": {"tags": ["score:40", "description:correct-answer", "mark_23"]}}
     assert nbchkr.utils.get_score(cell=cell) == 40
     assert nbchkr.utils.get_score(cell=cell, score_regex_pattern=r"mark\_(\d)") == 2
     assert nbchkr.utils.get_score(cell=cell, score_regex_pattern=r"mark\_(\d+)") == 23
+
+
+def test_get_description():
+    cell = {"metadata": {"tags": ["score:40", "description:correct-answer", "mark_23"]}}
+    assert nbchkr.utils.get_description(cell=cell) == "Correct answer"
+    assert (
+        nbchkr.utils.get_description(cell=cell, description_regex_pattern=r"mark\_(\d)")
+        == "2"
+    )
+    assert (
+        nbchkr.utils.get_description(
+            cell=cell, description_regex_pattern=r"mark\_(\d+)"
+        )
+        == "23"
+    )
+
+
+def test_get_description_when_last_tag():
+    cell = {"metadata": {"tags": ["score:40", "description:correct-answer"]}}
+    assert nbchkr.utils.get_description(cell=cell) == "Correct answer"

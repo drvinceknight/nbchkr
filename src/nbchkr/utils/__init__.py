@@ -5,7 +5,7 @@ import re
 from typing import Tuple, Union
 
 import nbformat  # type: ignore
-import unidecode
+import unidecode  # type: ignore
 from nbconvert.preprocessors import ExecutePreprocessor  # type: ignore
 
 TAGS_REGEX_PATTERNS_TO_IGNORE = ["hide", r"score:\d"]

@@ -4,8 +4,8 @@ import pathlib
 import re
 from typing import Tuple, Union
 
-import unidecode
 import nbformat  # type: ignore
+import unidecode
 from nbconvert.preprocessors import ExecutePreprocessor  # type: ignore
 
 TAGS_REGEX_PATTERNS_TO_IGNORE = ["hide", r"score:\d"]

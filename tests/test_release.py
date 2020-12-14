@@ -118,5 +118,7 @@ def test_remove_solution_and_output_for_nb_with_hidden_problems():
     assert "0.0" in str(nb_node)
 
     student_nb = nbchkr.utils.remove_cells(nb_node=nb_node)
-    assert "permutations = tuple(itertools.permutations(animals, 3))" not in str(student_nb)
+    assert "permutations = tuple(itertools.permutations(animals, 3))" not in str(
+        student_nb
+    )
     assert "0.0" not in str(student_nb)

@@ -4,6 +4,7 @@ import pathlib
 import re
 from typing import Tuple, Union
 
+import unidecode
 import nbformat  # type: ignore
 from nbconvert.preprocessors import ExecutePreprocessor  # type: ignore
 
@@ -11,7 +12,7 @@ TAGS_REGEX_PATTERNS_TO_IGNORE = ["hide", r"score:\d"]
 SOLUTION_REGEX = re.compile(
     r"### BEGIN SOLUTION[\s\S](.*?)[\s\S]### END SOLUTION", re.DOTALL
 )
-SOLUTION_REPL = """### BEGIN SOLUTION
+SOLUTION_REPL = r"""### BEGIN SOLUTION
 
 
 ### END SOLUTION"""
@@ -57,17 +58,15 @@ def remove_cells(
             for pattern in tags_regex_patterns_to_ignore
         ):
             try:
-                source = "".join(cell["source"])
+                source = unidecode.unidecode("".join(cell["source"]))
                 new_source = re.sub(
                     pattern=solution_regex, repl=solution_repl, string=source
                 )
                 cell["source"] = new_source
 
-                if bool(re.match(pattern=solution_regex, string=source)) is True:
-                    try:
+                if solution_repl in cell["source"]:
+                    if "outputs" in cell.keys():
                         cell["outputs"] = []
-                    except KeyError:  # pragma: no cover
-                        pass  # TODO Add test coverage for this statement
             except KeyError:  # pragma: no cover
                 pass  # TODO Add test coverage for this statement
             cells.append(cell)

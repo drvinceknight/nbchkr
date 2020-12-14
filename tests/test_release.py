@@ -102,3 +102,21 @@ def test_write_nb():
     except FileNotFoundError:  # TODO Ensure py3.8 is used so that can pass
         # `missing_ok=True` to `path.unlink`.
         pass
+
+
+def test_remove_solution_and_output_for_nb_with_hidden_problems():
+    """
+    This checks that solutions text is not included for
+    `notebook-with-hidden-problems.ipynb` which has two bugs:
+
+    - The output is included
+    - The characters for `### BEGIN SOLUTION` are not recognized.
+    """
+    nb_path = NB_PATH / "notebook-with-hidden-problems.ipynb"
+    nb_node = nbchkr.utils.read(nb_path=nb_path)
+    assert "permutations = tuple(itertools.permutations(animals, 3))" in str(nb_node)
+    assert "0.0" in str(nb_node)
+
+    student_nb = nbchkr.utils.remove_cells(nb_node=nb_node)
+    assert "permutations = tuple(itertools.permutations(animals, 3))" not in str(nb_node)
+    assert "0.0" not in str(nb_node)

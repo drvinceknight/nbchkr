@@ -112,7 +112,7 @@ def test_remove_solution_and_output_for_nb_with_hidden_problems():
     - The output is included
     - The characters for `### BEGIN SOLUTION` are not recognized.
     """
-    nb_path = NB_PATH / "notebook-with-hidden-problems.ipynb"
+    nb_path = NB_PATH / "specific/main-notebook-with-hidden-problems.ipynb"
     nb_node = nbchkr.utils.read(nb_path=nb_path)
     assert "permutations = tuple(itertools.permutations(animals, 3))" in str(nb_node)
     assert "0.0" in str(nb_node)

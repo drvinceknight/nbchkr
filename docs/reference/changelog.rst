@@ -1,7 +1,7 @@
 Changelog
 =========
 
-v0.0.6 - Improve handling of white space
+v0.0.6 - Improve handling of blank space
 ----------------------------------------
 
 2020-12-16

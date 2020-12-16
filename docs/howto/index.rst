@@ -16,3 +16,4 @@ How to:
    solve_an_assignment.rst
    check_a_submission.rst
    contribute.rst
+   release.rst

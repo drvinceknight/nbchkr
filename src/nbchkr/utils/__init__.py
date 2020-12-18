@@ -29,7 +29,10 @@ def read(nb_path: Union[pathlib.Path, str], as_version: int = 4) -> dict:
     Returns the python `dict` representation.
     """
     with open(nb_path, "r") as f:
-        nb = nbformat.read(f, as_version=as_version)
+        try:
+            nb = nbformat.read(f, as_version=as_version)
+        except nbformat.reader.NotJSONError:
+            return None
     return nb
 
 

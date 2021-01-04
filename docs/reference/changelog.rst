@@ -1,6 +1,11 @@
 Changelog
 =========
 
+v0.0.7 - Add ability to handle non notebook submissions
+-------------------------------------------------------
+
+2021-01-04
+
 v0.0.6 - Improve handling of blank space
 ----------------------------------------
 

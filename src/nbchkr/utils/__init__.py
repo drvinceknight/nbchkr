@@ -2,7 +2,7 @@ import collections
 import json
 import pathlib
 import re
-from typing import Tuple, Union
+from typing import Tuple, Union, Optional
 
 import nbformat  # type: ignore
 import unidecode  # type: ignore
@@ -172,7 +172,7 @@ def check(
     timeout: int = 600,
     score_regex_pattern=None,
     answer_tag_pattern=None,
-) -> Tuple[int, int, str]:
+) -> Tuple[Optional[int], Optional[int], str]:
     """
     Given a `nb_node`, it executes the notebook and keep track of the score.
 

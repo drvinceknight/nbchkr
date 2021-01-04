@@ -17,6 +17,15 @@ def test_read_nb_gives_dictionary():
     assert type(nb) is nbformat.NotebookNode
 
 
+def test_read_nb_gives_none_when_not_reading_notebook():
+    """
+    Tries to read in this test file.
+    """
+    nb_path = __file__
+    nb = nbchkr.utils.read(nb_path=nb_path)
+    assert nb is None
+
+
 def test_add_checks_creates_notebook_with_assertions():
     nb_node = nbchkr.utils.read(nb_path=NB_PATH / "submission.ipynb")
     source_nb_node = nbchkr.utils.read(nb_path=NB_PATH / "test.ipynb")

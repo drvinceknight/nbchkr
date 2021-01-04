@@ -292,3 +292,58 @@ def test_check_on_documentation_examples():
 
     expected_number_of_feedback_files = 3
     assert number_of_feedback_files == expected_number_of_feedback_files
+
+
+def test_check_on_a_non_notebook_file():
+    """
+    Tries to read in this test file.
+    """
+    # TODO add better tear down.
+
+    submission_nb = __file__
+    expected_output = ["", "", "False"]
+    expected_feedback = "Your notebook file was not in the correct format and could not be read"
+
+    output = subprocess.run(
+        [
+            "nbchkr",
+            "check",
+            "--source",
+            f"{NB_PATH}/test.ipynb",
+            "--submitted",
+            f"{submission_nb}",
+            "--feedback-suffix",
+            "_feedback.md",
+            "--output",
+            "output.csv",
+        ],
+        capture_output=True,
+    )
+    expected_stdout = str.encode(
+        f"{submission_nb} checked against {NB_PATH}/test.ipynb. Feedback written to {submission_nb}_feedback.md and output written to output.csv.\n"
+    )
+    expected_stdout += str.encode(
+        f"WARNING: {submission_nb} has tags that do not match the source.\n"
+    )
+    assert output.stdout == expected_stdout
+
+    with open("output.csv", "r") as f:
+        csv_reader = csv.reader(f)
+        output = list(csv_reader)
+
+    expected_output = [
+        ["Submission filepath", "Score", "Maximum score", "Tags match"],
+        [f"{submission_nb}"] + expected_output,
+    ]
+    assert output == expected_output
+
+    with open(f"{submission_nb}_feedback.md", "r") as f:
+        feedback = f.read()
+        assert feedback == expected_feedback
+
+    # TODO Add a better pytest cleanup.
+    try:
+        pathlib.Path(f"{submission_nb}_feedback.md").unlink()
+    except FileNotFoundError:  # TODO Ensure py3.8 is used so that can pass
+        # `missing_ok=True` to `path.unlink`.
+        pass

@@ -2,7 +2,7 @@ import collections
 import json
 import pathlib
 import re
-from typing import Tuple, Union, Optional
+from typing import Optional, Tuple, Union
 
 import nbformat  # type: ignore
 import unidecode  # type: ignore

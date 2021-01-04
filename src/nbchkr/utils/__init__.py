@@ -2,7 +2,7 @@ import collections
 import json
 import pathlib
 import re
-from typing import Tuple, Union
+from typing import Optional, Tuple, Union
 
 import nbformat  # type: ignore
 import unidecode  # type: ignore
@@ -29,7 +29,10 @@ def read(nb_path: Union[pathlib.Path, str], as_version: int = 4) -> dict:
     Returns the python `dict` representation.
     """
     with open(nb_path, "r") as f:
-        nb = nbformat.read(f, as_version=as_version)
+        try:
+            nb = nbformat.read(f, as_version=as_version)
+        except nbformat.reader.NotJSONError:
+            return {}
     return nb
 
 
@@ -169,7 +172,7 @@ def check(
     timeout: int = 600,
     score_regex_pattern=None,
     answer_tag_pattern=None,
-) -> Tuple[int, int, str]:
+) -> Tuple[Optional[int], Optional[int], str]:
     """
     Given a `nb_node`, it executes the notebook and keep track of the score.
 

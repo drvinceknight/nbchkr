@@ -15,5 +15,6 @@ How to:
    release_a_source_assignment.rst
    solve_an_assignment.rst
    check_a_submission.rst
+   handle_a_submission_in_the_wrong_format.rst
    contribute.rst
    release.rst

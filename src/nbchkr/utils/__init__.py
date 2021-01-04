@@ -32,7 +32,7 @@ def read(nb_path: Union[pathlib.Path, str], as_version: int = 4) -> dict:
         try:
             nb = nbformat.read(f, as_version=as_version)
         except nbformat.reader.NotJSONError:
-            return None
+            return {}
     return nb
 
 

@@ -78,7 +78,7 @@ def check(
         with typer.progressbar(sorted(glob.iglob(submitted))) as bar:
             for path in bar:
                 nb_node = nbchkr.utils.read(path)
-                if nb_node is not None:
+                if nb_node != {}:
                     tags_match = nbchkr.utils.check_tags_match(
                         source_nb_node=source_nb_node, nb_node=nb_node
                     )

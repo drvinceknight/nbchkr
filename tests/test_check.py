@@ -23,7 +23,7 @@ def test_read_nb_gives_none_when_not_reading_notebook():
     """
     nb_path = __file__
     nb = nbchkr.utils.read(nb_path=nb_path)
-    assert nb is None
+    assert nb == {}
 
 
 def test_add_checks_creates_notebook_with_assertions():

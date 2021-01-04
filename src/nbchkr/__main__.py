@@ -86,11 +86,16 @@ def check(
                     nb_node = nbchkr.utils.add_checks(
                         nb_node=nb_node, source_nb_node=source_nb_node
                     )
-                    score, maximum_score, feedback_md = nbchkr.utils.check(nb_node=nb_node)
+                    score, maximum_score, feedback_md = nbchkr.utils.check(
+                        nb_node=nb_node
+                    )
                 else:
-                    score, maximum_score, feedback_md = None, None, "Your notebook file was not in the correct format and could not be read"
+                    score, maximum_score, feedback_md = (
+                        None,
+                        None,
+                        "Your notebook file was not in the correct format and could not be read",
+                    )
                     tags_match = False
-
 
                 with open(f"{path}{feedback_suffix}", "w") as f:
                     f.write(feedback_md)

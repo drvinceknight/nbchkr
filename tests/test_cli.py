@@ -302,7 +302,9 @@ def test_check_on_a_non_notebook_file():
 
     submission_nb = __file__
     expected_output = ["", "", "False"]
-    expected_feedback = "Your notebook file was not in the correct format and could not be read"
+    expected_feedback = (
+        "Your notebook file was not in the correct format and could not be read"
+    )
 
     output = subprocess.run(
         [

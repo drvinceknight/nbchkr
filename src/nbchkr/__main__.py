@@ -4,6 +4,7 @@ import pathlib
 import re
 
 import typer
+import alive_progress
 
 import nbchkr.utils
 
@@ -75,8 +76,9 @@ def check(
             ["Submission filepath", "Score", "Maximum score", "Tags match"]
         )
 
-        with typer.progressbar(sorted(glob.iglob(submitted))) as bar:
-            for path in bar:
+        items = sorted(glob.iglob(submitted))
+        with alive_progress.alive_bar(len(items)) as bar:
+            for path in items:
                 nb_node = nbchkr.utils.read(path)
                 if nb_node != {}:
                     tags_match = nbchkr.utils.check_tags_match(
@@ -101,13 +103,14 @@ def check(
                     f.write(feedback_md)
 
                 csv_writer.writerow([path, score, maximum_score, tags_match])
-                typer.echo(
+                print(
                     f"{path} checked against {source}. Feedback written to {path}{feedback_suffix} and output written to {output}."
                 )
                 if tags_match is False:
-                    typer.echo(
+                    print(
                         f"WARNING: {path} has tags that do not match the source."
                     )
+                bar()
 
 
 if __name__ == "__main__":  # pragma: no cover

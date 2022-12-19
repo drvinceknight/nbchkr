@@ -4,8 +4,8 @@ import pathlib
 import re
 import time
 
-import typer
 import humanize
+import typer
 
 import nbchkr.utils
 

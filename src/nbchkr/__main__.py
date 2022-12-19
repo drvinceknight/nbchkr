@@ -2,8 +2,10 @@ import csv
 import glob
 import pathlib
 import re
+import time
 
 import typer
+import humanize
 
 import nbchkr.utils
 
@@ -72,42 +74,55 @@ def check(
     with open(f"{output}", "w") as f:
         csv_writer = csv.writer(f)
         csv_writer.writerow(
-            ["Submission filepath", "Score", "Maximum score", "Tags match"]
+            ["Submission filepath", "Score", "Maximum score", "Tags match", "Run time"]
         )
+    paths_to_check = sorted(glob.iglob(submitted))
+    number_of_paths_to_check = len(paths_to_check)
 
-        with typer.progressbar(sorted(glob.iglob(submitted))) as bar:
-            for path in bar:
-                nb_node = nbchkr.utils.read(path)
-                if nb_node != {}:
-                    tags_match = nbchkr.utils.check_tags_match(
-                        source_nb_node=source_nb_node, nb_node=nb_node
-                    )
+    for i, path in enumerate(paths_to_check):
+        start_date = time.time()
+        typer.echo(f"Check {i + 1}/{number_of_paths_to_check}: {path}")
+        nb_node = nbchkr.utils.read(path)
+        if nb_node != {}:
+            tags_match = nbchkr.utils.check_tags_match(
+                source_nb_node=source_nb_node, nb_node=nb_node
+            )
 
-                    nb_node = nbchkr.utils.add_checks(
-                        nb_node=nb_node, source_nb_node=source_nb_node
-                    )
-                    score, maximum_score, feedback_md = nbchkr.utils.check(
-                        nb_node=nb_node
-                    )
-                else:
-                    score, maximum_score, feedback_md = (
-                        None,
-                        None,
-                        "Your notebook file was not in the correct format and could not be read",
-                    )
-                    tags_match = False
+            nb_node = nbchkr.utils.add_checks(
+                nb_node=nb_node, source_nb_node=source_nb_node
+            )
+            try:
+                score, maximum_score, feedback_md = nbchkr.utils.check(nb_node=nb_node)
+            except TimeoutError:
+                feedback_md = "This notebook timed out."
+                score, maximum_score = None, None
+        else:
+            score, maximum_score, feedback_md = (
+                None,
+                None,
+                "\tYour notebook file was not in the correct format and could not be read",
+            )
+            tags_match = False
 
-                with open(f"{path}{feedback_suffix}", "w") as f:
-                    f.write(feedback_md)
+        time_delta = time.time() - start_date
 
-                csv_writer.writerow([path, score, maximum_score, tags_match])
-                typer.echo(
-                    f"{path} checked against {source}. Feedback written to {path}{feedback_suffix} and output written to {output}."
-                )
-                if tags_match is False:
-                    typer.echo(
-                        f"WARNING: {path} has tags that do not match the source."
-                    )
+        with open(f"{path}{feedback_suffix}", "w") as f:
+            f.write(feedback_md)
+
+        with open(f"{output}", "a") as f:
+            csv_writer = csv.writer(f)
+            csv_writer.writerow([path, score, maximum_score, tags_match, time_delta])
+
+        typer.echo(
+            f"\t{path} checked against {source}. Feedback written to {path}{feedback_suffix} and output written to {output}."
+        )
+        if tags_match is False:
+            typer.echo(f"\tWARNING: {path} has tags that do not match the source.")
+
+        human_time_delta = humanize.precisedelta(
+            time_delta, minimum_unit="seconds", format="%d"
+        )
+        typer.echo(f"\tFinished in {human_time_delta}")
 
 
 if __name__ == "__main__":  # pragma: no cover

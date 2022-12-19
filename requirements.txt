@@ -2,3 +2,4 @@ Unidecode==1.1.1
 humanize
 jupyter
 typer
+ypy-websocket<0.6.0   # TODO Understand why this is required.

@@ -24,7 +24,6 @@ exit_code = 0
 for markdown_file_path in filter(
     lambda path: ".ipynb-feedback" not in str(path), root.glob("**/*md")
 ):
-
     markdown = markdown_file_path.read_text()
     exceptions = known_exceptions.get(markdown_file_path.parent.name, set(()))
 

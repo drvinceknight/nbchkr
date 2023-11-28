@@ -1,9 +1,8 @@
-import csv
 import glob
 import pathlib
 import re
 import time
-
+import pandas as pd
 import humanize
 import typer
 
@@ -71,11 +70,8 @@ def check(
     """
 
     source_nb_node = nbchkr.utils.read(source)
-    with open(f"{output}", "w") as f:
-        csv_writer = csv.writer(f)
-        csv_writer.writerow(
-            ["Submission filepath", "Score", "Maximum score", "Tags match", "Run time"]
-        )
+    data = []
+
     paths_to_check = sorted(glob.iglob(submitted))
     number_of_paths_to_check = len(paths_to_check)
 
@@ -92,26 +88,39 @@ def check(
                 nb_node=nb_node, source_nb_node=source_nb_node
             )
             try:
-                score, maximum_score, feedback_md = nbchkr.utils.check(nb_node=nb_node)
+                score, maximum_score, feedback_md, passed_check = nbchkr.utils.check(
+                    nb_node=nb_node
+                )
             except TimeoutError:
                 feedback_md = "This notebook timed out."
                 score, maximum_score = None, None
         else:
-            score, maximum_score, feedback_md = (
+            score, maximum_score, feedback_md, passed_check = (
                 None,
                 None,
                 "\tYour notebook file was not in the correct format and could not be read",
+                {},
             )
             tags_match = False
 
         time_delta = time.time() - start_date
 
+        measures = {
+            "Submission filepath": path,
+            "Score": score,
+            "Maximum score": maximum_score,
+            "Tags match": tags_match,
+            "Run time": time_delta,
+        }
+        measures.update(passed_check)
+
+        data.append(measures)
+
         with open(f"{path}{feedback_suffix}", "w") as f:
             f.write(feedback_md)
 
-        with open(f"{output}", "a") as f:
-            csv_writer = csv.writer(f)
-            csv_writer.writerow([path, score, maximum_score, tags_match, time_delta])
+        df = pd.json_normalize(data)
+        df.to_csv(f"{output}")
 
         typer.echo(
             f"\t{path} checked against {source}. Feedback written to {path}{feedback_suffix} and output written to {output}."

@@ -214,18 +214,26 @@ def test_check_on_a_collection_of_notebooks():
         ],
         capture_output=True,
     )
-    expected_stdout = str.encode(
-        f"{NB_PATH}/submission.ipynb checked against {NB_PATH}/test.ipynb. Feedback written to {NB_PATH}/submission.ipynb-feedback.md and output written to output.csv.\n"
+    expected_stdout = str.encode(f"Check 1/3: {NB_PATH}/submission.ipynb\n")
+    expected_stdout += str.encode(
+        f"\t{NB_PATH}/submission.ipynb checked against {NB_PATH}/test.ipynb. Feedback written to {NB_PATH}/submission.ipynb-feedback.md and output written to output.csv.\n"
+    )
+    expected_stdout += str.encode(f"\tFinished in 2 seconds\n")
+    expected_stdout += str.encode(
+        f"Check 2/3: {NB_PATH}/submission_with_with_missing_tags.ipynb\n"
     )
     expected_stdout += str.encode(
-        f"{NB_PATH}/submission_with_missing_tags.ipynb checked against {NB_PATH}/test.ipynb. Feedback written to {NB_PATH}/submission_with_missing_tags.ipynb-feedback.md and output written to output.csv.\n"
+        f"\t{NB_PATH}/submission_with_missing_tags.ipynb checked against {NB_PATH}/test.ipynb. Feedback written to {NB_PATH}/submission_with_missing_tags.ipynb-feedback.md and output written to output.csv.\n"
     )
+    expected_stdout += str.encode(f"\tFinished in 2 seconds\n")
     expected_stdout += str.encode(
-        f"WARNING: {NB_PATH}/submission_with_missing_tags.ipynb has tags that do not match the source.\n"
+        f"\tWARNING: {NB_PATH}/submission_with_missing_tags.ipynb has tags that do not match the source.\n"
     )
+    expected_stdout += str.encode(f"Check 3/3: {NB_PATH}/test.ipynb\n")
     expected_stdout += str.encode(
-        f"{NB_PATH}/test.ipynb checked against {NB_PATH}/test.ipynb. Feedback written to {NB_PATH}/test.ipynb-feedback.md and output written to output.csv.\n"
+        f"\t{NB_PATH}/test.ipynb checked against {NB_PATH}/test.ipynb. Feedback written to {NB_PATH}/test.ipynb-feedback.md and output written to output.csv.\n"
     )
+    expected_stdout += str.encode(f"\tFinished in 1 seconds\n")
     # assert output.stderr == b''  # TODO Fix the warning error
     assert output.stdout == expected_stdout
 
@@ -233,13 +241,14 @@ def test_check_on_a_collection_of_notebooks():
         csv_reader = csv.reader(f)
         output = list(csv_reader)
 
-    expected_output = [
+    expected_output_without_time = [
         ["Submission filepath", "Score", "Maximum score", "Tags match"],
         [f"{NB_PATH}/submission.ipynb", "2", "10", "True"],
         [f"{NB_PATH}/submission_with_missing_tags.ipynb", "2", "10", "False"],
         [f"{NB_PATH}/test.ipynb", "10", "10", "True"],
     ]
-    assert output == expected_output
+    for row, expected_row in zip(output, expected_output_without_time):
+        assert row[:-1] == expected_row
 
 
 def test_check_on_documentation_examples():
@@ -270,13 +279,14 @@ def test_check_on_documentation_examples():
         csv_reader = csv.reader(f)
         output = list(csv_reader)
 
-    expected_output = [
+    expected_output_without_time = [
         ["Submission filepath", "Score", "Maximum score", "Tags match"],
         [f"{docs_path}/submissions/assignment_01.ipynb", "2", "11", "True"],
         [f"{docs_path}/submissions/assignment_02.ipynb", "10", "11", "True"],
         [f"{docs_path}/submissions/assignment_03.ipynb", "4", "11", "False"],
     ]
-    assert output == expected_output
+    for row, expected_row in zip(output, expected_output_without_time):
+        assert row[:-1] == expected_row
 
     submissions_directory = pathlib.Path(f"{docs_path}/submissions/")
     number_of_feedback_files = 0
@@ -301,9 +311,9 @@ def test_check_on_a_non_notebook_file():
     # TODO add better tear down.
 
     submission_nb = __file__
-    expected_output = ["", "", "False"]
+    expected_output_without_time = ["", "", "False"]
     expected_feedback = (
-        "Your notebook file was not in the correct format and could not be read"
+        "\tYour notebook file was not in the correct format and could not be read"
     )
 
     output = subprocess.run(
@@ -321,23 +331,32 @@ def test_check_on_a_non_notebook_file():
         ],
         capture_output=True,
     )
-    expected_stdout = str.encode(
-        f"{submission_nb} checked against {NB_PATH}/test.ipynb. Feedback written to {submission_nb}_feedback.md and output written to output.csv.\n"
+    print(output.stdout)
+    expected_stdout = str.encode(f"Check 1/1: {submission_nb}\n")
+    expected_stdout += str.encode(
+        f"\t{submission_nb} checked against {NB_PATH}/test.ipynb. Feedback written to {submission_nb}_feedback.md and output written to output.csv.\n"
     )
     expected_stdout += str.encode(
-        f"WARNING: {submission_nb} has tags that do not match the source.\n"
+        f"\tWARNING: {submission_nb} has tags that do not match the source.\n"
     )
+    expected_stdout += str.encode(f"\tFinished in 0 seconds\n")
     assert output.stdout == expected_stdout
 
     with open("output.csv", "r") as f:
         csv_reader = csv.reader(f)
         output = list(csv_reader)
 
-    expected_output = [
-        ["Submission filepath", "Score", "Maximum score", "Tags match"],
-        [f"{submission_nb}"] + expected_output,
+    expected_header = [
+        "Submission filepath",
+        "Score",
+        "Maximum score",
+        "Tags match",
+        "Run time",
     ]
-    assert output == expected_output
+    expected_output_without_time = [f"{submission_nb}"] + expected_output_without_time
+    assert output[0] == expected_header
+    assert output[1][:-1] == expected_output_without_time
+    assert float(output[1][-1]) > 0
 
     with open(f"{submission_nb}_feedback.md", "r") as f:
         feedback = f.read()

@@ -143,8 +143,8 @@ def get_score(cell: dict, score_regex_pattern=None) -> int:
         try:
             return int(search.group(1))  # type: ignore
         except AttributeError:
-            return 0
-    return 0
+            return None
+    return None
 
 
 def get_description(
@@ -181,6 +181,7 @@ def check(
     - The student score
     - The total score obtainable
     - Some feedback in markdown format
+    - A dictionary mapping check description tags to a boolean
     """
     if score_regex_pattern is None:
         score_regex_pattern = SCORE_REGEX
@@ -191,6 +192,7 @@ def check(
 
     total_score = 0
     maximum_score = 0
+    passed_check = {}
     feedback_md = ""
 
     for cell in nb_node["cells"]:
@@ -205,9 +207,11 @@ def check(
 ## {answer_tags}
 """
         # TODO Use the walrus operator here.
-        if get_score(cell, score_regex_pattern=score_regex_pattern) > 0:
+        if get_score(cell, score_regex_pattern=score_regex_pattern) is not None:
             score = get_score(cell)
+
             description = get_description(cell)
+
             if description != "":
                 feedback_md += f"""
 ### {description}
@@ -216,7 +220,12 @@ def check(
             try:
                 outputs = cell["outputs"][0]
                 if outputs["output_type"] == "error":
+                    # TODO Add something here that outputs the error to a log.
+                    # Do this for errors that are not expected so not NbChkr...
+                    # errors.
                     question_feedback = outputs["evalue"]
+
+                    passed_check[description] = False
                     feedback_md += f"""
 {question_feedback}
 
@@ -227,7 +236,8 @@ def check(
 {score} / {score}
 """
                 total_score += score
-    return total_score, maximum_score, feedback_md
+                passed_check[description] = True
+    return total_score, maximum_score, feedback_md, passed_check
 
 
 def check_tags_match(

@@ -231,7 +231,7 @@ def check(
 
 0 / {score}
 """
-            except IndexError:
+            except (KeyError, IndexError):
                 feedback_md += f"""
 {score} / {score}
 """

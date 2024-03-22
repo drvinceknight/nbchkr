@@ -21,6 +21,7 @@ def release(
     """
     This releases a piece of coursework by removing the solutions and checks from a source.
     """
+    # TODO Add a check that all cells with no tags are markdown cells.
     nb_path = pathlib.Path(source)
     nb_node = nbchkr.utils.read(nb_path=nb_path)
     nbchkr.utils.remove_cells(nb_node=nb_node)

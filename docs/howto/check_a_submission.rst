@@ -57,9 +57,9 @@ them::
     >>> maximum_score
     11
     >>> feedback_md
-    '\n---\n\n## answer:q1\n\n### Answer is an integer\n\n1 / 1\n\n### Correct answer\n\n3 / 3\n\n---\n\n## answer:q2\n\n### Presence of docstring\n\nYou did not include a docstring...'
+    '\n---\n\n## answer:q1\n\n### Integer answer\n\n1 / 1\n\n### Correct answer\n...'
     >>> passed_checks
-    {'Answer is an integer': True, 'Correct answer': True, 'Presence of docstring': False}
+    {'Integer answer': True, 'Correct answer': True, 'Presence of docstring': False}
 
 Note that the :code:`nbrchkr.utils.check_tags_match`,
 :code:`nbchkr.utils.add_checks` and :code:`nbchkr.utils.check` functions can

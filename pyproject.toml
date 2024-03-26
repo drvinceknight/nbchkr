@@ -24,7 +24,7 @@ dependencies = [
 nbchkr = "nbchkr.__main__:app"
 
 [project.urls]
-Homepage = ""
+Homepage = "http://nbchkr.readthedocs.io"
 
 [tool.hatch.version]
 path = "src/nbchkr/__init__.py"
@@ -32,18 +32,4 @@ path = "src/nbchkr/__init__.py"
 [tool.hatch.build.targets.sdist]
 include = [
     "/src",
-]
-
-[tool.flit.metadata]
-module = "nbchkr"
-author = "Vincent Knight"
-description-file = "README.md"
-classifiers = [ "License :: OSI Approved :: MIT License",]
-requires = [
-    "Unidecode==1.1.1",
-    "humanize",
-    "jupyter",
-    "typer",
-    "pandas",
-    "ypy-websocket<0.6.0",   # TODO Understand why this is required.
 ]

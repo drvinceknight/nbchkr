@@ -3,13 +3,14 @@
 
 ## answer:q1
 
-### Answer is an integer
+### Integer answer
 
 1 / 1
 
 ### Correct answer
 
-The expected answer is 1 because 21 = 5 * 3 + 1
+Your variable q1_answer has value 3.
+ The expected answer is 1 because 21 = 5 * 3 + 1
 
 0 / 3
 
@@ -23,6 +24,7 @@ The expected answer is 1 because 21 = 5 * 3 + 1
 
 ### Correct answer
 
-Incorrect answer for m=5, n=3: 5 mod 2 = 1 because 5 = 3 * 1 + 2
+Your variable get_remainder has value <function get_remainder at 0x11272e340>.
+ Your function does not give the correct values
 
 0 / 6

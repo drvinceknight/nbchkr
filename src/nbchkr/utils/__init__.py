@@ -172,11 +172,11 @@ def check(
     timeout: int = 600,
     score_regex_pattern=None,
     answer_tag_pattern=None,
-) -> Tuple[Optional[int], Optional[int], str]:
+) -> Tuple[Optional[int], Optional[int], str, dict]:
     """
     Given a `nb_node`, it executes the notebook and keep track of the score.
 
-    This returns 3 things:
+    This returns 4 things:
 
     - The student score
     - The total score obtainable

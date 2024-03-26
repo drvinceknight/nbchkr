@@ -1,6 +1,7 @@
 """
 Tests for a small utility functions.
 """
+
 import nbchkr
 
 
@@ -53,3 +54,8 @@ def test_get_description():
 def test_get_description_when_last_tag():
     cell = {"metadata": {"tags": ["score:40", "description:correct-answer"]}}
     assert nbchkr.utils.get_description(cell=cell) == "Correct answer"
+
+
+def test_get_description_when_empty():
+    cell = {"metadata": {}}
+    assert nbchkr.utils.get_description(cell=cell) == ""

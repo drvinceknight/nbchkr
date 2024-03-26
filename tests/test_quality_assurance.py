@@ -1,6 +1,7 @@
 """"
 Tests to check quality assurance of notebooks.
 """
+
 import nbchkr.utils
 from test_release import NB_PATH
 

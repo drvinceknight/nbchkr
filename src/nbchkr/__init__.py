@@ -1,6 +1,7 @@
 """
 A lightweight solution to mark/grade/check notebook assignments.
 """
+
 from .checks import (
     NbChkrIncorrectVariable,
     NbChkrVariableDoesNotExist,

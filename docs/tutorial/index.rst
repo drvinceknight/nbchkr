@@ -92,6 +92,7 @@ Everything should now look like the following:
 Writing checks for the answer
 +++++++++++++++++++++++++++++
 
+.. TODO: Write the new helper function example.
 We will now write a check for the answer, that :code:`nbchkr` uses to be able to give
 feedback to a student. We do this using python :code:`assert` statements::
 

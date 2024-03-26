@@ -27,6 +27,7 @@ Add the :code:`answer:<uique_label>` tag to the cell.
 Write a check
 -------------
 
+.. TODO: Write the new helper function example.
 In a :code:`code` cell write :code:`assert` statements to check specific
 elements of the answer::
 

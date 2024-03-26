@@ -92,7 +92,7 @@ def check(
                 score, maximum_score, feedback_md, passed_check = nbchkr.utils.check(
                     nb_node=nb_node
                 )
-            except TimeoutError:
+            except TimeoutError:  # pragma: no cover
                 feedback_md = "This notebook timed out."
                 score, maximum_score = None, None
         else:
@@ -111,9 +111,9 @@ def check(
             "Score": score,
             "Maximum score": maximum_score,
             "Tags match": tags_match,
-            "Run time": time_delta,
         }
         measures.update(passed_check)
+        measures.update({"Run time": time_delta})
 
         data.append(measures)
 

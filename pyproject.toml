@@ -1,0 +1,49 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "nbchkr"
+dynamic = ["version"]
+description = "A lightweight tool to grade notebook assignements"
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [
+    { name = "Vince Knight", email = "knightva@cardiff.ac.uk" },
+]
+dependencies = [
+    "humanize",
+    "jupyter",
+    "pandas",
+    "typer",
+    "Unidecode==1.1.1",
+    "ypy-websocket<0.6.0",  # TODO understand why this is required.
+]
+
+[project.scripts]
+nbchkr = "nbchkr.__main__:app"
+
+[project.urls]
+Homepage = ""
+
+[tool.hatch.version]
+path = "src/nbchkr/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+]
+
+[tool.flit.metadata]
+module = "nbchkr"
+author = "Vincent Knight"
+description-file = "README.md"
+classifiers = [ "License :: OSI Approved :: MIT License",]
+requires = [
+    "Unidecode==1.1.1",
+    "humanize",
+    "jupyter",
+    "typer",
+    "pandas",
+    "ypy-websocket<0.6.0",   # TODO Understand why this is required.
+]

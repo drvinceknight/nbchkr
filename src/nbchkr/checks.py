@@ -3,6 +3,7 @@ This module contains code that can be used to write checks.
 
 All code that does not pass a given check raises one of two types of errors:
 """
+
 import sys
 
 
@@ -26,8 +27,6 @@ def check_variable_has_expected_property(
         variable = local_variables[variable_string]
         assert property_check(variable=variable, **property_check_kwargs)
     except AssertionError:
-        if feedback_string is None:
-            feedback_string = ""
         raise NbChkrIncorrectVariable(
             f"Your variable {variable_string} has value {variable}.\n {feedback_string}"
         )

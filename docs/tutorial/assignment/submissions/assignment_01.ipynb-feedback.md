@@ -3,6 +3,8 @@
 
 ## answer:q1
 
+### Answer is an integer
+
 1 / 1
 
 ### Correct answer

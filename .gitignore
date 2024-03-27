@@ -17,3 +17,4 @@ tests/nbs/submission_with_missing_tags.ipynb_feedback.md
 tests/nbs/test.ipynb-feedback.md
 tests/nbs/test.ipynb_feedback.md
 .pypirc
+solution.ipynb

@@ -1,3 +1,6 @@
 Unidecode==1.1.1
+humanize
 jupyter
 typer
+pandas
+ypy-websocket<0.6.0   # TODO Understand why this is required.

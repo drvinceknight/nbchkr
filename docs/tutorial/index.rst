@@ -34,6 +34,10 @@ then :code:`Tags`.
 
 .. image:: /_static/tutorial/add_tags.png
 
+.. attention:: 
+
+   Depending on your version of Jupyter the screenshot might not look the same.
+
 This should make the native tag menu available to you on every cell in your
 Jupyter notebook.
 
@@ -93,28 +97,48 @@ Writing checks for the answer
 +++++++++++++++++++++++++++++
 
 We will now write a check for the answer, that :code:`nbchkr` uses to be able to give
-feedback to a student. We do this using python :code:`assert` statements::
+feedback to a student. We do this using `nbchkr.checks.check_variable_has_expected_property`::
+
+    import nbchkr.checks
 
     q1_answer = _
-    feedback_text = "Your opteration did not return an integer which is expected"
-    assert type(q1_answer) is int
+    feedback_string = "Your operation did not return an integer which is expected"
+
+    def check_variable_is_an_integer(variable):
+        return type(variable) is int
+
+    variable_string = "q1_answer"
+
+    nbchkr.checks.check_variable_has_expected_property(
+        variable_string=variable_string,
+        feedback_string=feedback_string,
+        property_check=check_variable_is_an_integer,
+    )
+
+We should add a description to our check which will then appear in the
+feedback and the summary data file. 
+We do this by adding the tag: :code:`description:integer-answer`.
 
 We will also add a tag: :code:`score:1` to this cell.
 
 As well as checking that the answer is an integer let us check the actual answer
 by creating a new cell and writing::
 
-    feedback_text = "The expected answer is 1 because 21 = 5 * 3 + 1"
-    assert q1_answer == 1, feedback_text
+    feedback_string = "The expected answer is 1 because 21 = 5 * 3 + 1"
+
+    def check_value_is_correct(variable):
+        return variable == 1
+
+    nbchkr.checks.check_variable_has_expected_property(
+        variable_string=variable_string,
+        feedback_string=feedback_string,
+        property_check=check_value_is_correct,
+    )
 
 This will be worth 3 points so let us add the tag: :code:`score:3`.
 
 We can choose to add a description to our check which will then appear in the
 feedback. We do this by adding the tag: :code:`description:correct-answer`.
-
-Everything should now look like the following:
-
-.. image:: /_static/tutorial/seeing_the_check_tags.png
 
 Writing another question
 ++++++++++++++++++++++++
@@ -149,7 +173,7 @@ We will now add some cells to check the answer.
 
 First let us make sure there is a docstring::
 
-    feedback_text = """You did not include a docstring. This is important to help document your code.
+    feedback_string = """You did not include a docstring. This is important to help document your code.
 
 
     It is done  using triple quotation marks. For example:
@@ -168,7 +192,17 @@ First let us make sure there is a docstring::
     ignored by Python so cannot be accessed in the same way.
 
     """
-    assert  get_remainder.__doc__ is not None, feedback_text
+
+    variable_string = "get_remainder"
+
+    def check_function_has_docstring(variable):
+        return variable.__doc__ is not None
+
+    nbchkr.checks.check_variable_has_expected_property(
+        variable_string=variable_string,
+        feedback_string=feedback_string,
+        property_check=check_function_has_docstring,
+    )
 
 Whilst we've decided to write quite a lot of feedback with details about writing
 docstrings we are only going to score this part of the answer 1 point so we use
@@ -178,9 +212,35 @@ We will add the description tag: :code:`description:presence-of-docstring`.
 
 We will also include specific checks for the actual answer::
 
-    assert get_remainder(5, 3) == 2, "Incorrect answer for m=5, n=3: 5 mod 2 = 1 because 5 = 3 * 1 + 2"
-    assert get_remainder(34, 21) == 13, "Incorrect answer for m=34, n=21: 34 mod 21 = 13 because 34 = 21 * 1 + 13"
-    assert get_remainder(1000, 10) == 0, "Incorrect answer for m=1000, n=10: 1000 mod 10 = 0 because 1000 = 10 * 100 + 0"
+    feedback_string = "Your function does not give the correct values"
+
+    def check_function_gives_correct_value(variable, m, n, expected_value):
+        return variable(m, n) == expected_value
+
+    nbchkr.checks.check_variable_has_expected_property(
+        variable_string=variable_string,
+        feedback_string=feedback_string,
+        property_check=check_function_gives_correct_value,
+        m=5,
+        n=3,
+        expected_value=2,
+    )
+    nbchkr.checks.check_variable_has_expected_property(
+        variable_string=variable_string,
+        feedback_string=feedback_string,
+        property_check=check_function_gives_correct_value,
+        m=43,
+        n=21,
+        expected_value=1,
+    )
+    nbchkr.checks.check_variable_has_expected_property(
+        variable_string=variable_string,
+        feedback_string=feedback_string,
+        property_check=check_function_gives_correct_value,
+        m=1000,
+        n=10,
+        expected_value=0,
+    )
 
 For this we will use the description tag: :code:`description:correct-answer`.
 
@@ -232,7 +292,7 @@ This has gone through and checked each notebook, you can see the output here:
 
 .. csv-table:: The summary results
    :file: assignment/data.csv
-   :widths: 50, 10, 30, 15
+   :widths: 45, 10, 10, 10, 5, 5, 5, 5, 5
    :header-rows: 1
 
 We see that `assignment_03.ipynb` has a :code:`False` flag under the

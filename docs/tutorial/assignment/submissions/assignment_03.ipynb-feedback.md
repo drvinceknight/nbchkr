@@ -3,6 +3,8 @@
 
 ## answer:q1
 
+### Integer answer
+
 1 / 1
 
 ### Correct answer
@@ -15,12 +17,12 @@
 
 ### Presence of docstring
 
-name 'get_remainder' is not defined
+The variable get_remainder does not exist.
 
 0 / 1
 
 ### Correct answer
 
-name 'get_remainder' is not defined
+The variable get_remainder does not exist.
 
 0 / 6

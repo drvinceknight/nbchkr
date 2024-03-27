@@ -19,7 +19,6 @@ for markdown_file_path in filter(
     and (".pytest_cache" not in str(path)),
     root.glob("**/*md"),
 ):
-
     markdown = markdown_file_path.read_text()
     aspell_output = subprocess.check_output(
         ["aspell", "-t", "--list", "--lang=en_GB"], input=markdown, text=True

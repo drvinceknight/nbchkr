@@ -6,6 +6,7 @@ Tests for the check functionality
     - Write feedback.
 
 """
+
 import nbchkr.utils
 import nbformat
 from test_release import NB_PATH
@@ -48,10 +49,11 @@ def test_add_checks_creates_notebook_with_assertions_but_omits_missing_tags():
 
 def test_check_with_no_errors_for_original_source():
     nb_node = nbchkr.utils.read(nb_path=NB_PATH / "test.ipynb")
-    score, maximum_score, feedback = nbchkr.utils.check(nb_node=nb_node)
+    score, maximum_score, feedback, passed_check = nbchkr.utils.check(nb_node=nb_node)
     expected_score = 10
     assert score == expected_score
     assert maximum_score == expected_score
+    assert passed_check
 
     expected_feedback = """
 ---
@@ -81,7 +83,7 @@ def test_check_with_no_errors_for_test_submission():
     nb_node = nbchkr.utils.read(nb_path=NB_PATH / "submission.ipynb")
     source_nb_node = nbchkr.utils.read(nb_path=NB_PATH / "test.ipynb")
     nb_node = nbchkr.utils.add_checks(nb_node=nb_node, source_nb_node=source_nb_node)
-    score, maximum_score, feedback = nbchkr.utils.check(nb_node=nb_node)
+    score, maximum_score, feedback, passed_check = nbchkr.utils.check(nb_node=nb_node)
     expected_score = 2
     expected_maximum_score = 10
     assert score == expected_score
@@ -118,11 +120,17 @@ def test_check_with_no_errors_for_test_submission_with_missing_tags():
     nb_node = nbchkr.utils.read(nb_path=NB_PATH / "submission_with_missing_tags.ipynb")
     source_nb_node = nbchkr.utils.read(nb_path=NB_PATH / "test.ipynb")
     nb_node = nbchkr.utils.add_checks(nb_node=nb_node, source_nb_node=source_nb_node)
-    score, maximum_score, feedback = nbchkr.utils.check(nb_node=nb_node)
+    score, maximum_score, feedback, passed_check = nbchkr.utils.check(nb_node=nb_node)
     expected_score = 2
     expected_maximum_score = 10
+    expected_passed_check = {
+        "Correct answer": False,
+        "Correct answer for n up until 10": False,
+        "Has docstring": True,
+    }
     assert score == expected_score
     assert maximum_score == expected_maximum_score
+    assert passed_check == expected_passed_check
     expected_feedback = """
 ---
 

@@ -6,6 +6,7 @@ Tests for the release functionality:
     - Write nb
 
 """
+
 import pathlib
 
 import nbchkr.utils

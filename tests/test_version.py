@@ -1,6 +1,7 @@
 """
 Test that the version number exists and is valid.
 """
+
 import nbchkr
 import packaging
 

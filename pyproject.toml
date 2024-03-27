@@ -1,0 +1,38 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "nbchkr"
+dynamic = ["version"]
+description = "A lightweight tool to grade notebook assignements"
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [
+    { name = "Vince Knight", email = "knightva@cardiff.ac.uk" },
+]
+dependencies = [
+    "humanize",
+    "jupyter",
+    "pandas",
+    "typer",
+    "Unidecode==1.1.1",
+    "ypy-websocket<0.6.0",  # TODO understand why this is required.
+]
+
+[project.scripts]
+nbchkr = "nbchkr.__main__:app"
+
+[project.urls]
+Homepage = "http://nbchkr.readthedocs.io"
+
+[tool.hatch.version]
+path = "src/nbchkr/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+]
+
+[project.optional-dependencies]
+docs = ["sphinx-rtd-theme"]

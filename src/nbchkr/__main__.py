@@ -1,8 +1,9 @@
-import csv
 import glob
 import pathlib
 import re
-
+import time
+import pandas as pd
+import humanize
 import typer
 
 import nbchkr.utils
@@ -20,6 +21,7 @@ def release(
     """
     This releases a piece of coursework by removing the solutions and checks from a source.
     """
+    # TODO Add a check that all cells with no tags are markdown cells.
     nb_path = pathlib.Path(source)
     nb_node = nbchkr.utils.read(nb_path=nb_path)
     nbchkr.utils.remove_cells(nb_node=nb_node)
@@ -69,45 +71,68 @@ def check(
     """
 
     source_nb_node = nbchkr.utils.read(source)
-    with open(f"{output}", "w") as f:
-        csv_writer = csv.writer(f)
-        csv_writer.writerow(
-            ["Submission filepath", "Score", "Maximum score", "Tags match"]
-        )
+    data = []
 
-        with typer.progressbar(sorted(glob.iglob(submitted))) as bar:
-            for path in bar:
-                nb_node = nbchkr.utils.read(path)
-                if nb_node != {}:
-                    tags_match = nbchkr.utils.check_tags_match(
-                        source_nb_node=source_nb_node, nb_node=nb_node
-                    )
+    paths_to_check = sorted(glob.iglob(submitted))
+    number_of_paths_to_check = len(paths_to_check)
 
-                    nb_node = nbchkr.utils.add_checks(
-                        nb_node=nb_node, source_nb_node=source_nb_node
-                    )
-                    score, maximum_score, feedback_md = nbchkr.utils.check(
-                        nb_node=nb_node
-                    )
-                else:
-                    score, maximum_score, feedback_md = (
-                        None,
-                        None,
-                        "Your notebook file was not in the correct format and could not be read",
-                    )
-                    tags_match = False
+    for i, path in enumerate(paths_to_check):
+        start_date = time.time()
+        typer.echo(f"Check {i + 1}/{number_of_paths_to_check}: {path}")
+        nb_node = nbchkr.utils.read(path)
+        if nb_node != {}:
+            tags_match = nbchkr.utils.check_tags_match(
+                source_nb_node=source_nb_node, nb_node=nb_node
+            )
 
-                with open(f"{path}{feedback_suffix}", "w") as f:
-                    f.write(feedback_md)
-
-                csv_writer.writerow([path, score, maximum_score, tags_match])
-                typer.echo(
-                    f"{path} checked against {source}. Feedback written to {path}{feedback_suffix} and output written to {output}."
+            nb_node = nbchkr.utils.add_checks(
+                nb_node=nb_node, source_nb_node=source_nb_node
+            )
+            try:
+                score, maximum_score, feedback_md, passed_check = nbchkr.utils.check(
+                    nb_node=nb_node
                 )
-                if tags_match is False:
-                    typer.echo(
-                        f"WARNING: {path} has tags that do not match the source."
-                    )
+            except TimeoutError:  # pragma: no cover
+                feedback_md = "This notebook timed out."
+                score, maximum_score = None, None
+        else:
+            score, maximum_score, feedback_md, passed_check = (
+                None,
+                None,
+                "\tYour notebook file was not in the correct format and could not be read",
+                {},
+            )
+            tags_match = False
+
+        time_delta = time.time() - start_date
+
+        measures = {
+            "Submission filepath": path,
+            "Score": score,
+            "Maximum score": maximum_score,
+            "Tags match": tags_match,
+        }
+        measures.update(passed_check)
+        measures.update({"Run time": time_delta})
+
+        data.append(measures)
+
+        with open(f"{path}{feedback_suffix}", "w") as f:
+            f.write(feedback_md)
+
+        df = pd.json_normalize(data)
+        df.to_csv(f"{output}")
+
+        typer.echo(
+            f"\t{path} checked against {source}. Feedback written to {path}{feedback_suffix} and output written to {output}."
+        )
+        if tags_match is False:
+            typer.echo(f"\tWARNING: {path} has tags that do not match the source.")
+
+        human_time_delta = humanize.precisedelta(
+            time_delta, minimum_unit="seconds", format="%d"
+        )
+        typer.echo(f"\tFinished in {human_time_delta}")
 
 
 if __name__ == "__main__":  # pragma: no cover

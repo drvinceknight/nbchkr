@@ -1,4 +1,4 @@
-Submission filepath,Score,Maximum score,Tags match
-submissions/assignment_01.ipynb,2,11,True
-submissions/assignment_02.ipynb,10,11,True
-submissions/assignment_03.ipynb,4,11,False
+,Submission filepath,Score,Maximum score,Tags match,Integer answer,Correct answer,Presence of docstring,Run time
+0,submissions/assignment_01.ipynb,2,11,True,True,False,True,3.520920753479004
+1,submissions/assignment_02.ipynb,10,11,True,True,True,False,1.2404108047485352
+2,submissions/assignment_03.ipynb,4,11,False,True,False,False,1.5148279666900635

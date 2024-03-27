@@ -33,3 +33,6 @@ path = "src/nbchkr/__init__.py"
 include = [
     "/src",
 ]
+
+[options.extras_require]
+doc = ["sphinx-rtd-theme"]

@@ -37,6 +37,23 @@ To do this define a :code:`property_check` function that takes a variable
 Note that it is possible to refer to the output of a previous cell using
 :code:`_`.
 
+Here is a check for the previous output being even::
+
+    output = _
+
+    import nbchkr.checks
+    variable_string = "output"
+    feedback_string = "Your output is not even"
+
+    def check_even(variable):
+        return variable % 2 == 0
+
+    nbchkr.checks.check_variable_has_expected_property(
+        variable_string=variable_string,
+        feedback_string=feedback_string,
+        property_check=check_even,
+    )
+
 Add the :code:`score:<integer>` tag to the cell. The :code:`<integer>` is the
 value associated with this specific check. If the :code:`<condition>` is met
 then the :code:`<integer>` value will be added to the total score of a student.
@@ -50,3 +67,27 @@ appear as :code:`### Correct answer` in the feedback.
 Note that it is possible to write multiple checks for a given answer. This can
 be done so as to programmatically offer varying levels of feedback for specific
 parts of the task.
+
+
+Property checks with arguments
+''''''''''''''''''''''''''''''
+
+Note that it is also possible to write property check functions that take
+keyword arguments and pass these to
+:code:`nbchkr.checks.check_variable_has_expected_property`. For example::
+
+    output = _
+
+    import nbchkr.checks
+    variable_string = "output"
+    feedback_string = "Your output is not even"
+
+    def check_divisibiliy_by_m(variable, m):
+        return variable % m == 0
+
+    nbchkr.checks.check_variable_has_expected_property(
+        variable_string=variable_string,
+        feedback_string=feedback_string,
+        property_check=check_divisibiliy_by_m,
+        m=2,
+    )

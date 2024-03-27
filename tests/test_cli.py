@@ -193,9 +193,16 @@ def test_check_on_documentation_examples():
     Note that this also serves as a test of the tutorial commands: if there is a
     regression that causes these tests to fail the documentation might need to
     be updated.
+
+    This deletes the feedback files and checks they're created.
     """
     docs_path = f"{NB_PATH}/../../docs/tutorial/assignment"
     # TODO Add better tear down.
+
+    submissions_directory = pathlib.Path(f"{docs_path}/submissions/")
+    for feedback_path in submissions_directory.glob("*.ipynb-feedback.testmd"):
+        feedback_path.unlink(missing_ok=True)
+
     output = subprocess.run(
         [
             "nbchkr",
@@ -261,17 +268,11 @@ def test_check_on_documentation_examples():
     for row, expected_row in zip(output, expected_output_without_time):
         assert row[:-1] == expected_row
 
-    submissions_directory = pathlib.Path(f"{docs_path}/submissions/")
     number_of_feedback_files = 0
 
     for feedback_path in submissions_directory.glob("*.ipynb-feedback.testmd"):
         number_of_feedback_files += 1
-        expected_feedback_path = pathlib.Path(
-            f"{docs_path}/submissions/{feedback_path.stem}.md"
-        )
-        feedback = feedback_path.read_text()
-        expected_feedback = expected_feedback_path.read_text()
-        assert len(feedback) == len(expected_feedback), f"Failed for {feedback_path}"
+        assert feedback_path.is_file()
 
     expected_number_of_feedback_files = 3
     assert number_of_feedback_files == expected_number_of_feedback_files

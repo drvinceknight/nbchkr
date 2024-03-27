@@ -6,3 +6,5 @@
 .coverage
 dist/*
 env/*
+*.ipynb-feedback.testmd
+*DS_Store

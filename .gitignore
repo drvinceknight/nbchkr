@@ -8,3 +8,12 @@ dist/*
 env/*
 *.ipynb-feedback.testmd
 *DS_Store
+data.csv
+output.csv
+tests/nbs/submission.ipynb-feedback.md
+tests/nbs/submission.ipynb_feedback.md
+tests/nbs/submission_with_missing_tags.ipynb-feedback.md
+tests/nbs/submission_with_missing_tags.ipynb_feedback.md
+tests/nbs/test.ipynb-feedback.md
+tests/nbs/test.ipynb_feedback.md
+.pypirc

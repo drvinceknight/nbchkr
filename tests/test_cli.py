@@ -5,16 +5,9 @@ Tests for the command line tool.
 import csv
 import pathlib
 import subprocess
-import sys
 
 import nbchkr
 from test_release import NB_PATH
-import pytest
-
-pytestmark = pytest.mark.skipif(
-    sys.platform != "darwin",
-    reason="Testing for the cli on Windows is flaky. This is a bug and should be fixed",
-)
 
 
 def test_release():

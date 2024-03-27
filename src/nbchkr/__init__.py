@@ -8,4 +8,4 @@ from .checks import (
     check_variable_has_expected_property,
 )
 
-__version__ = "0.0.7"
+__version__ = "0.0.8"
